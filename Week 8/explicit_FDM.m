@@ -43,3 +43,5 @@ u_avg = mean(u(Nt,:));
 % Display the result
 fprintf('Nx = %4d, Nt = %4d, dx = %6.8f, dt = %6.8f, u_avg = %6.8f\n', ...
         Nx, Nt, dx, dt, u_avg);
+    
+contourf(u)

@@ -835,8 +835,30 @@ contourf(u');
 \end_layout
 
 \begin_layout Problem
-The stability can be now tested using the implicit method by varying the
- value of 
+From the previous lab report, it was found that the explicit method is only
+ stable when the following holds:
+\begin_inset Formula 
+\[
+\begin{cases}
+\Delta x>\frac{2}{\lambda}\\
+\Delta t<\frac{\Delta x^{2}}{2}\\
+\Delta t<\frac{2}{\lambda^{2}}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The second condition can be rewritten as 
+\begin_inset Formula $\frac{\Delta t}{\Delta x^{2}}<2$
+\end_inset
+
+ for stability.
+ This can be now tested using the implicit method by varying the value of
+ 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1102,7 +1124,7 @@ x_min = 0; x_max = 10;
 
 \begin_layout Plain Layout
 
-dx = 0.1;   % Arbitrarily Chosen
+dx = 1.5;   % Arbitrarily Chosen
 \end_layout
 
 \begin_layout Plain Layout
@@ -1112,7 +1134,7 @@ dx = 0.1;   % Arbitrarily Chosen
 
 \begin_layout Plain Layout
 
-coef = 10;  % Some relationship between dt/dx^2 to vary
+coef = 0.5;  % Some relationship between dt/dx^2 to vary
 \end_layout
 
 \begin_layout Plain Layout
@@ -1185,42 +1207,22 @@ for jj = 1:Nt
 
 \begin_layout Plain Layout
 
-        % Vectors for LHS tridiagonal matrix
+        % Vectors for tridiagonal matrix
 \end_layout
 
 \begin_layout Plain Layout
 
-        l_a(ii) = 1+coef;     % 1 + dt/dx^2
+        a(ii) = 1+coef;   % 1 + dt/dx^2
 \end_layout
 
 \begin_layout Plain Layout
 
-        l_b(ii) = -1/2*coef;  % -1/2 * dt/dx^2
+        b(ii) = -1/2*coef;      % -1/2 * dt/dx^2
 \end_layout
 
 \begin_layout Plain Layout
 
-        % Vectors for RHS tridiagonal matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-        r_a(ii) = 1-coef;     % 1 + dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        r_b(ii) = 1/2*coef;   % -1/2 * dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        % Vector for RHS solution
-\end_layout
-
-\begin_layout Plain Layout
-
-        r_d(ii) = u(ii,jj);   % Solution vector (RHS)
+        d(ii) = u(ii,jj);   % Solution vector (RHS)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1230,34 +1232,23 @@ for jj = 1:Nt
 
 \begin_layout Plain Layout
 
-    % Constructing the LHS tridiagonal matrix
+    % Constructing tridiagonal matrix
 \end_layout
 
 \begin_layout Plain Layout
 
-    LHS_A = diag(l_a(2:size(u,1)-1),0) + diag(l_b(2:size(u,1)-2),1) + diag(l_b(2
-:size(u,1)-2),-1);
+    A = diag(a(2:size(u,1)-1),0) + diag(b(2:size(u,1)-2),1) + diag(b(2:size(u,1)
+-2),-1);
 \end_layout
 
 \begin_layout Plain Layout
 
-    % Constructing the RHS tridiagonal matrix
+    % Construct the RHS: A * d + [vec] - [vec]
 \end_layout
 
 \begin_layout Plain Layout
 
-    RHS_A = diag(r_a(2:size(u,1)-1),0) + diag(r_b(2:size(u,1)-2),1) + diag(r_b(2
-:size(u,1)-2),-1);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Construct the RHS solution: A * d + [vec] - [vec]
-\end_layout
-
-\begin_layout Plain Layout
-
-    rhs = RHS_A * r_d(2:end)';
+    rhs = A * d(2:end)';
 \end_layout
 
 \begin_layout Plain Layout
@@ -1272,12 +1263,13 @@ for jj = 1:Nt
 
 \begin_layout Plain Layout
 
-    % Solving matrix equation using GaussSeidel code from previous weeks
+    % Solving matrix equation using GaussSeidel code from previous week's
+ work
 \end_layout
 
 \begin_layout Plain Layout
 
-    [u_sol, iter] = GaussSeidel(LHS_A,rhs,10^-6);
+    [u_sol, iter] = GaussSeidel(A,rhs,10^-6);
 \end_layout
 
 \begin_layout Plain Layout
@@ -1315,9 +1307,7 @@ contourf(u');
 \end_layout
 
 \begin_layout Problem
-It was seen that the Crank-Nicolson method was unconditionally stable in
- Appendix 3.
- This is shown below.
+It was seen that the Crank-Nicolson method was unconditionally stable.
 \end_layout
 
 \begin_layout Problem
@@ -1350,7 +1340,7 @@ status open
 
 
 \begin_inset Graphics
-	filename Lab 8 Question 2 Figure 1.eps
+	filename Lab 8 Question 1 Figure 1.eps
 	width 80text%
 
 \end_inset
@@ -1390,7 +1380,7 @@ status open
 
 
 \begin_inset Graphics
-	filename Lab 8 Question 2 Figure 2.eps
+	filename Lab 8 Question 1 Figure 2.eps
 	width 80text%
 
 \end_inset
@@ -1433,7 +1423,7 @@ status open
 
 
 \begin_inset Graphics
-	filename Lab 8 Question 2 Figure 3.eps
+	filename Lab 8 Question 1 Figure 3.eps
 	width 80text%
 
 \end_inset
@@ -1473,7 +1463,7 @@ status open
 
 
 \begin_inset Graphics
-	filename Lab 8 Question 2 Figure 4.eps
+	filename Lab 8 Question 1 Figure 4.eps
 	width 80text%
 
 \end_inset
@@ -1484,19 +1474,6 @@ status open
 \end_inset
 
 
-\end_layout
-
-\begin_layout Problem
-Again, it can been seen that for large and small 
-\begin_inset Formula $\frac{\Delta t}{\Delta x^{2}}$
-\end_inset
-
- the solution is stable unlike the explicit FDM method used on Lab 7.
- This can be beneficial in terms of using a larger 
-\begin_inset Formula $\Delta t$
-\end_inset
-
- meaning fewer time steps reqruied to solve a solution.
 \end_layout
 
 \end_body

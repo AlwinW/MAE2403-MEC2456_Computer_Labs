@@ -1,4 +1,4 @@
-function [u, Nx, Nt, dx, dt, u_avg] = explicit_FDM_func(Nx, quiet)
+function [u, Nx, Nt, dx, dt, u_avg] = explicit_FDM_func(Nx)
 % MATLAB code to compute explicit FDM for:
 % U_t = U_xx - lambda*U_x
 % n is the time step
