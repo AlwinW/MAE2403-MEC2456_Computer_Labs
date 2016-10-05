@@ -1,0 +1,1959 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\begin_preamble
+\usepackage[framed, numbered]{matlab-prettifier}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language australian
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "palatino" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "style={Matlab-editor}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MAE2403 Lab 7 and 8
+\end_layout
+
+\begin_layout Author
+Alwin Wang
+\begin_inset Newline newline
+\end_inset
+
+2510 2176
+\end_layout
+
+\begin_layout Date
+5th October 2016
+\end_layout
+
+\begin_layout Section
+Laboratory 7
+\end_layout
+
+\begin_layout Problem
+Diffusion-convection PDE 
+\begin_inset Formula $\frac{\partial u}{\partial t}=\frac{\partial^{2}u}{\partial x^{2}}-\lambda\frac{\partial u}{\partial x}$
+\end_inset
+
+ where 
+\begin_inset Formula $\lambda=3.0$
+\end_inset
+
+, 
+\begin_inset Formula $0.0\leq x\leq1.0$
+\end_inset
+
+ and 
+\begin_inset Formula $0.0\leq t\leq0.2$
+\end_inset
+
+.
+ The initial condition is 
+\begin_inset Formula $u\left(t=0\right)=\sin\left(\frac{3\pi x}{2}\right)$
+\end_inset
+
+ and the boundary condition is 
+\begin_inset Formula $u\left(x=0.0\right)=0.0$
+\end_inset
+
+ and 
+\begin_inset Formula $u\left(x=1.0\right)=-1.0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Problem
+(a) Hand Calculation: See Appendix 1
+\end_layout
+
+\begin_layout Problem
+(b) Hand Calculation: See Appendix 1
+\end_layout
+
+\begin_layout Problem
+(c) Hand Calculation: See Appendix 1
+\end_layout
+
+\begin_layout Problem
+(d) The MATLAB m-file solution for the PDE for various N is shown below.
+ 
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+lstparams "style={Matlab-editor}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [x, y]=RK4(func, y_init, x_init, x_end, nstep)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Matlab Function of the 4th Order Runge-Kutta Method
+\end_layout
+
+\begin_layout Plain Layout
+
+% func: the ODE to be solved
+\end_layout
+
+\begin_layout Plain Layout
+
+% y_init: Initial y value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_init: Inital x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_end: Final x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% nstep: No.
+ of steps to get from x_init to x_end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Finding step size
+\end_layout
+
+\begin_layout Plain Layout
+
+h = (x_end - x_init)/nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Pre allocating matrix and intitializing algorithim
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+y  = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initial values
+\end_layout
+
+\begin_layout Plain Layout
+
+x(1) = x_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+y(1) = y_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% For loop used to represent the 4th Order Runge-Kutta Method
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1 : nstep
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Next x value 
+\end_layout
+
+\begin_layout Plain Layout
+
+    x(i+1) = x(i) + h;
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Computing slope functions
+\end_layout
+
+\begin_layout Plain Layout
+
+    k1 = func(x(i),y(i));
+\end_layout
+
+\begin_layout Plain Layout
+
+    k2 = func(x(i)+h/2,y(i)+k1*h/2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    k3 = func(x(i)+h/2,y(i)+k2*h/2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    k4 = func(x(i)+h,y(i)+h*k3);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Compute the next y value
+\end_layout
+
+\begin_layout Plain Layout
+
+    y(i+1) = y(i) + h/6 *(k1+2*k2+2*k3+k4);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % fprintf('x = %6.8f, y = %6.8f, k1 = %6.8f, k2 = %6.8f, k3 = %6.8f, k4 =
+ %6.8f,
+\backslash
+n', ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    %    x(i+1), y(i+1), k1, k2, k3, k4);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 5 Question 1 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Higher Order ODE
+\end_layout
+
+\begin_layout Problem
+(a) Hand Calculation: See Appendix 2
+\end_layout
+
+\begin_layout Problem
+(b) Hand Calculation: See Appendix 2
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset space \hfill{}
+\end_inset
+
+(Optional Question for Extra Marks)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(c) The m-code that can solve a higher order ODE is shown below
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [x, v, y]=RK42D(func, y_init, v_init, x_init, x_end, nstep)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Matlab Function of the 4th Order Runge-Kutta Method in 2D
+\end_layout
+
+\begin_layout Plain Layout
+
+% func: the ODE to be solved
+\end_layout
+
+\begin_layout Plain Layout
+
+% y_init: Initial y value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_init: Inital x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_end: Final x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% nstep: No.
+ of steps to get from x_init to x_end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Finding step size
+\end_layout
+
+\begin_layout Plain Layout
+
+h = (x_end - x_init)/nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Pre allocating matrix and intitializing algorithim
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+v = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+y  = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Set the initial values
+\end_layout
+
+\begin_layout Plain Layout
+
+x(1) = x_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+v(1) = v_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+y(1) = y_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% For loop used to represent the 4th Order Runge-Kutta Method
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1 : nstep
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Next x value 
+\end_layout
+
+\begin_layout Plain Layout
+
+    x(i+1) = x(i) + h;
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Computing slope functions
+\end_layout
+
+\begin_layout Plain Layout
+
+    k1 = func(x(i),v(i),y(i));
+\end_layout
+
+\begin_layout Plain Layout
+
+    k2 = func(x(i)+h/2,v(i)+k1(1)*h/2,y(i)+k1(2)*h/2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    k3 = func(x(i)+h/2,v(i)+k2(1)*h/2,y(i)+k2(2)*h/2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    k4 = func(x(i)+h,v(i)+k3(1)*h,y(i)+k3(2)*h);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Determine the new v and y
+\end_layout
+
+\begin_layout Plain Layout
+
+    v(i+1) = v(i) + h/6 *(k1(1)+2*k2(1)+2*k3(1)+k4(1));
+\end_layout
+
+\begin_layout Plain Layout
+
+    y(i+1) = y(i) + h/6 *(k1(2)+2*k2(2)+2*k3(2)+k4(2));
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Export the report
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('x = %6.8f, y = %6.8f, v = %6.8f
+\backslash
+n', ...
+\end_layout
+
+\begin_layout Plain Layout
+
+       x(i+1), y(i+1), v(i+1));
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(d) The MATLAB m-file solution to solve the 2nd order ODE is shown below
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% Second order ODE
+\end_layout
+
+\begin_layout Plain Layout
+
+d2ydt2 = @(t, v, y) [-2.5 * v - 98.1 * y; v];
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Solve using RK4 in 2D
+\end_layout
+
+\begin_layout Plain Layout
+
+[x, v, y]=RK42D(d2ydt2, 0.125, 0, 0, 10, 200);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Plot the output
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+title('ODE Solution')
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel('y')
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel('L')
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(x, y)
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 5 Question 2 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Laboratory 6
+\end_layout
+
+\begin_layout Problem
+Explicit and Implicit Euler Method
+\begin_inset Formula 
+\[
+\frac{\text{d}y}{\text{d}x}=4e^{0.5x}-100.0y
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(1) See Appendix 3
+\end_layout
+
+\begin_layout Problem
+(2) See Appendix 3
+\end_layout
+
+\begin_layout Problem
+(3) See Appendix 3
+\end_layout
+
+\begin_layout Problem
+(4) MATLAB m-code Euler solution for the ODE with various step sizes
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% ODE
+\end_layout
+
+\begin_layout Plain Layout
+
+dydx = @(x, y) 4*exp(0.5*x) - 100*y;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+figure(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+% Each of the individual cases
+\end_layout
+
+\begin_layout Plain Layout
+
+for h = [1.0 0.1 0.001]
+\end_layout
+
+\begin_layout Plain Layout
+
+    [xx, yy] = euler(dydx, 3, 0, 4, 4/h);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % plot out result
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(xx, yy, 'DisplayName', ['n = ' num2str(h)])
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+% analytical solution
+\end_layout
+
+\begin_layout Plain Layout
+
+yy = 0.039801*exp(0.5*xx) + 2.9602*exp(-100*xx);
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(xx, yy, 'DisplayName', 'Analytical')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% decorate the plot
+\end_layout
+
+\begin_layout Plain Layout
+
+legend(gca, 'show', 'Location', 'Best')
+\end_layout
+
+\begin_layout Plain Layout
+
+title('Explicit Euler Method')
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 6 Question 1 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 6 Question 1 Figure 2.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It can be seen that the explicit Euler method is highly unstable as it rapidly
+ oscillates between increasingly large negative and positive values.
+ This was expected as the step size used was much larger than the critical
+ step size for the stability criteria.
+\end_layout
+
+\begin_layout Problem
+However for 
+\begin_inset Formula $h=0.001$
+\end_inset
+
+ it appears that the ODE solution is stable.
+ This is also expected as the step size is now less than the critical step
+ size 
+\begin_inset Formula $h_{c}$
+\end_inset
+
+ found in the appendix.
+\end_layout
+
+\begin_layout Problem
+(5) This MATLAB m-file for the implicit method is shown below for various
+ step sizes.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% dy/dx = 4*exp(0.5*x) - 100*y
+\end_layout
+
+\begin_layout Plain Layout
+
+% by using the implicit Euler method
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% h: step size
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_range: definition domain of x
+\end_layout
+
+\begin_layout Plain Layout
+
+% n: number of steps
+\end_layout
+
+\begin_layout Plain Layout
+
+% xx: x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% yy: y value
+\end_layout
+
+\begin_layout Plain Layout
+
+% initilization of step size and x domain.
+ calculations of step numbers.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+figure(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+for h = [1.0 0.1]
+\end_layout
+
+\begin_layout Plain Layout
+
+    x_range=[0 4];
+\end_layout
+
+\begin_layout Plain Layout
+
+    y_initial = 3;
+\end_layout
+
+\begin_layout Plain Layout
+
+    n=(x_range(2)-x_range(1))/h;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % generating grid in x domain.
+\end_layout
+
+\begin_layout Plain Layout
+
+    xx = linspace(x_range(1), x_range(2), n+1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    yy = y_initial;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    % for-loop to computer yy(i)
+\end_layout
+
+\begin_layout Plain Layout
+
+    for i=1:1:n
+\end_layout
+
+\begin_layout Plain Layout
+
+        % the implicit method
+\end_layout
+
+\begin_layout Plain Layout
+
+        yy(i+1) = ( yy(i) + h*(4*exp(0.5*xx(i+1)))) / ( 1 + 100*h );
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    % plot out result
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(xx, yy, 'DisplayName', ['n = ' num2str(h)])
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+% analytical solution
+\end_layout
+
+\begin_layout Plain Layout
+
+yy = 0.039801*exp(0.5*xx) + 2.9602*exp(-100*xx);
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(xx, yy, 'DisplayName', 'Analytical')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% decorate the plot
+\end_layout
+
+\begin_layout Plain Layout
+
+legend(gca, 'show', 'Location', 'Best')
+\end_layout
+
+\begin_layout Plain Layout
+
+title('Implicit Euler Method')
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel('x')
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel('y')
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The output plot is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 6 Question 1 Figure 3.eps
+	scale 90
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+From the output, it is clear that for smaller 
+\begin_inset Formula $n$
+\end_inset
+
+ values, the implicit method is increasingly closer to the analytical solution.
+ It is also noticed that there is no oscillation behaviour like that seen
+ in the unnstable explicit Euler method for larger 
+\begin_inset Formula $n$
+\end_inset
+
+ values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Shooting Method
+\begin_inset Formula 
+\[
+\frac{\text{d}y}{\text{d}x}+xy+yx^{2}\quad0\leq x\leq1.0,\quad y=1.4\,\text{at}\,x=1.0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(a) Plot the calculated 
+\begin_inset Formula $y$
+\end_inset
+
+ at the boundary for a series of initial guesses.
+ The m-file code and output are shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% To find the correct initial condition of ODE using the Shooting method
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% The range of initial y values
+\end_layout
+
+\begin_layout Plain Layout
+
+y0 = 0:0.1:10;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Define the ODE
+\end_layout
+
+\begin_layout Plain Layout
+
+ODE = @(x,y) -x*y-y*x^2;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Pre allocating matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+BC_RHS = 1:length(y0);
+\end_layout
+
+\begin_layout Plain Layout
+
+% Find the RHS values
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1:length(y0)
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Solve the ODE with using RK4 function file
+\end_layout
+
+\begin_layout Plain Layout
+
+    [x,y] = RK4(ODE,y0(i),0,1,16);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Write out the RHS boundary value
+\end_layout
+
+\begin_layout Plain Layout
+
+    BC_RHS(i) = y(length(y));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% plot out the calculated value at RHS boundary vs.
+ Y0
+\end_layout
+
+\begin_layout Plain Layout
+
+figure(3)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(y0,BC_RHS);
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel('Initial y(0)')
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel('BC_{RHS}');
+\end_layout
+
+\begin_layout Plain Layout
+
+line([y0(1) y0(end)], [1.4 1.4],'Color','r');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 6 Question 2 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+From the graph above, it is estimated that the solution will be around 3.2
+ for the initial condition in order for right hand side and left hand side
+ to be equal.
+\end_layout
+
+\begin_layout Problem
+(b) The solution for the yenddiff function to calculate the difference in
+ the calculated 
+\begin_inset Formula $y$
+\end_inset
+
+ at the boundary and the required value is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function yenddiff = yenddiff_vs_yinit(y_init)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Matlab Function to calculate the difference between the y value
+\end_layout
+
+\begin_layout Plain Layout
+
+% at boudary and required value
+\end_layout
+
+\begin_layout Plain Layout
+
+% y_init: Initial y value (RHS boundary value
+\end_layout
+
+\begin_layout Plain Layout
+
+% yenddiff: The difference between the y value at boudary 
+\end_layout
+
+\begin_layout Plain Layout
+
+% and required value
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Store the ODEs as functions
+\end_layout
+
+\begin_layout Plain Layout
+
+ODE = @(x,y) -x*y-y*x^2;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Solve the ODE by calling the RK4 function file
+\end_layout
+
+\begin_layout Plain Layout
+
+[~,Y] = RK4(ODE, y_init, 0, 1, 16);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Output the difference between the calculated RHS boundary
+\end_layout
+
+\begin_layout Plain Layout
+
+% value and the required value 1.4
+\end_layout
+
+\begin_layout Plain Layout
+
+yenddiff = Y(length(Y)) - 1.4;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(c) The code used to call the the bisection to solve for the root of yenddiff
+ and output shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% NOTE: THIS DOES NOT WORK WITHOUT ' '
+\end_layout
+
+\begin_layout Plain Layout
+
+root = false_pos('yenddiff_vs_yinit', 0, 10, 1e-4);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ODE = @(x,y) -x*y-y*x^2;
+\end_layout
+
+\begin_layout Plain Layout
+
+[~,Y] = RK4(ODE, 3.2214, 0, 1, 16);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+fprintf('The solution is yinit = %6.8f, yend = %6.8f
+\backslash
+n', ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    root, Y(end))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>> The solution is yinit = 3.22136477, yend = 1.40001531
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(d) The solution for 
+\begin_inset Formula $y\left(x\right)$
+\end_inset
+
+ where 
+\begin_inset Formula $x=0$
+\end_inset
+
+ to 
+\begin_inset Formula $x=1$
+\end_inset
+
+ is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x = 0.00000000, y = 3.22136477
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.10000000, y = 3.20426492
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.20000000, y = 3.14920290
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.30000000, y = 3.05205775
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.40000000, y = 2.91095933
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.50000000, y = 2.72685615
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.60000000, y = 2.50381614
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.70000000, y = 2.24899344
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.80000000, y = 1.97220000
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 0.90000000, y = 1.68508678
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 1.00000000, y = 1.40001863
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 6 Question 2 Figure 2.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+RK Method with Adaptive Step Size (Optional Question for Extra Marks)
+\begin_inset Formula 
+\[
+\frac{\text{d}y}{\text{d}x}=4e^{0.8x}-0.5y
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+In order to create a general MATLAB code, the follow function was defined:
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [x, y, h]=RK4adaptive(func, y_init, x_init, x_end, h_init, errorbound)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The user guesses an initial value for 
+\begin_inset Formula $h$
+\end_inset
+
+ and this value is adjusted for each step sized based on the method outlined
+ in lecture 14:
+\begin_inset Formula 
+\begin{align*}
+h_{0} & =Sh_{c}\left\{ \frac{\Delta_{0}}{\Delta_{c}}\right\} ^{0.20}\qquad\text{if}\,\Delta_{0}>\Delta_{c},\\
+h_{0} & =Sh_{c}\left\{ \frac{\Delta_{0}}{\Delta_{c}}\right\} ^{0.25}\qquad\text{if}\,\Delta_{0}<\Delta_{c}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $S$
+\end_inset
+
+ is a safety factor, usually taken as 
+\begin_inset Formula $0.9$
+\end_inset
+
+.
+ The values of 
+\begin_inset Formula $h$
+\end_inset
+
+ are returned to the user to see how it varies along the steps.
+ If the new 
+\begin_inset Formula $h_{0}$
+\end_inset
+
+ is too large compared to the previous 
+\begin_inset Formula $h_{c}$
+\end_inset
+
+, then it is reduced.
+ The m-code is shown below:
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [x, y, h]=RK4adaptive(func, y_init, x_init, x_end, h_init, errorbound)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Matlab Function of the 4th Order Runge-Kutta Method using Adaptive h
+\end_layout
+
+\begin_layout Plain Layout
+
+% func: the ODE to be solved
+\end_layout
+
+\begin_layout Plain Layout
+
+% y_init: Initial y value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_init: Inital x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_end: Final x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% nstep: No.
+ of steps to get from x_init to x_end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Current x, y values
+\end_layout
+
+\begin_layout Plain Layout
+
+i = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+x(i) = x_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+y(i) = y_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+h(i) = h_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Step one by one until you just pass the end
+\end_layout
+
+\begin_layout Plain Layout
+
+while x(i) < x_end
+\end_layout
+
+\begin_layout Plain Layout
+
+    % RK with step value of h (nstep = 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    [~, RKh] = RK4(func, y(i), x(i), x(i) + h(i), 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % RK with step value of h/2 (nstep = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    [~, RKh2] = RK4(func, y(i), x(i), x(i) + h(i), 2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Current error
+\end_layout
+
+\begin_layout Plain Layout
+
+    DeltaC = RKh2(end) - RKh(end);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Adjust the step size
+\end_layout
+
+\begin_layout Plain Layout
+
+    if DeltaC > errorbound 
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Error too large, use formula to adjust
+\end_layout
+
+\begin_layout Plain Layout
+
+        h(i + 1) = 0.8 * h(i) * abs(errorbound / DeltaC)^0.2;
+\end_layout
+
+\begin_layout Plain Layout
+
+    else
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Error too small, increase h for efficiency
+\end_layout
+
+\begin_layout Plain Layout
+
+        h(i + 1) = 0.9 * h(i) * abs(errorbound / DeltaC)^0.25;
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Make sure h is not too large
+\end_layout
+
+\begin_layout Plain Layout
+
+        if h(i + 1) > h_init
+\end_layout
+
+\begin_layout Plain Layout
+
+            h(i + 1) = h_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+        end
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Calculate the next step using the the new h value
+\end_layout
+
+\begin_layout Plain Layout
+
+    [xx, yy] = RK4(func, y(i), x(i), x(i) + h(i + 1), 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    x(i + 1) = xx(end);
+\end_layout
+
+\begin_layout Plain Layout
+
+    y(i + 1) = yy(end);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Next index
+\end_layout
+
+\begin_layout Plain Layout
+
+    i = i + 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Since we "overshot" yend, recalculate it
+\end_layout
+
+\begin_layout Plain Layout
+
+i = i - 1; % "go back" one step
+\end_layout
+
+\begin_layout Plain Layout
+
+[xx, yy] = RK4(func, y(i-1), x(i-1), x_end, 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+x(i + 1) = xx(end);
+\end_layout
+
+\begin_layout Plain Layout
+
+y(i + 1) = yy(end);
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+For the provided ODE, the adaptive RK4 method is used and the output is
+ shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+   x      y      h
+\end_layout
+
+\begin_layout Plain Layout
+
+0.0000  2.0000 0.5000
+\end_layout
+
+\begin_layout Plain Layout
+
+0.2118  2.8172 0.2118
+\end_layout
+
+\begin_layout Plain Layout
+
+0.4708  4.0517 0.2591
+\end_layout
+
+\begin_layout Plain Layout
+
+0.7036  5.4269 0.2328
+\end_layout
+
+\begin_layout Plain Layout
+
+0.9324  7.0759 0.2288
+\end_layout
+
+\begin_layout Plain Layout
+
+1.1520  8.9909 0.2196
+\end_layout
+
+\begin_layout Plain Layout
+
+1.3646 11.2139 0.2125
+\end_layout
+
+\begin_layout Plain Layout
+
+1.5701 13.7730 0.2055
+\end_layout
+
+\begin_layout Plain Layout
+
+1.7691 16.7043 0.1990
+\end_layout
+
+\begin_layout Plain Layout
+
+1.9621 20.0441 0.1929
+\end_layout
+
+\begin_layout Plain Layout
+
+2.0000 20.7652 0.1872
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 6 Question 3 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,2050 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\begin_preamble
+\usepackage[framed, numbered]{matlab-prettifier}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "palatino" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "style={Matlab-editor}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MAE2403 Lab 1 and 2
+\end_layout
+
+\begin_layout Author
+Alwin Wang
+\begin_inset Newline newline
+\end_inset
+
+2510 2176
+\end_layout
+
+\begin_layout Date
+18th August 2016
+\end_layout
+
+\begin_layout Section
+Laboratory 1
+\end_layout
+
+\begin_layout Problem
+Gauss-Seidel Method
+\end_layout
+
+\begin_layout Problem
+(1) Hand Calculation: See Appendix 1
+\end_layout
+
+\begin_layout Problem
+(2) The MATLAB m-file solution that implements the Gauss-Seidel method is
+ as follows
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+lstparams "style={Matlab-editor}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [x,counter] = GaussSeidel(A,d,toler)
+\end_layout
+
+\begin_layout Plain Layout
+
+% This function determines the solution of the matrix problem
+\end_layout
+
+\begin_layout Plain Layout
+
+%      [A][x] = [d]
+\end_layout
+
+\begin_layout Plain Layout
+
+% recursively using the Gauss-Seidel technique.
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\end_layout
+
+\begin_layout Plain Layout
+
+% Variables
+\end_layout
+
+\begin_layout Plain Layout
+
+% x          : The vector of unknowns (User Output)
+\end_layout
+
+\begin_layout Plain Layout
+
+% counter    : The number of iterations required (User Output)
+\end_layout
+
+\begin_layout Plain Layout
+
+% A          : The matrix A (User Input)
+\end_layout
+
+\begin_layout Plain Layout
+
+% d          : The RHS vector d (User Input)
+\end_layout
+
+\begin_layout Plain Layout
+
+% N          : The number of columns in the matrix A
+\end_layout
+
+\begin_layout Plain Layout
+
+% M          : The number of rows in the matrix A
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_old      : The old guess of x
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_bak      : to back up x_old.
+ this is for comparing the difference of x_new and x_bak to determine whether
+ convergence is achieved.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_new      : The updated guess of x
+\end_layout
+
+\begin_layout Plain Layout
+
+% toler      : tolerance for convergence
+\end_layout
+
+\begin_layout Plain Layout
+
+% temp       : a variable for temporary information
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Determine the # of columns and rows in the matrix A
+\end_layout
+
+\begin_layout Plain Layout
+
+[N,M] = size(A);
+\end_layout
+
+\begin_layout Plain Layout
+
+if N ~= M
+\end_layout
+
+\begin_layout Plain Layout
+
+    disp('Error, not a square matrix!');
+\end_layout
+
+\begin_layout Plain Layout
+
+    quit;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+% Also determine if the vector d is the correct size
+\end_layout
+
+\begin_layout Plain Layout
+
+if N ~= length(d)
+\end_layout
+
+\begin_layout Plain Layout
+
+    disp('Error, length of d not the same as dim of A')
+\end_layout
+
+\begin_layout Plain Layout
+
+    quit;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initialise an empty A_new
+\end_layout
+
+\begin_layout Plain Layout
+
+A_new = zeros(N,M);
+\end_layout
+
+\begin_layout Plain Layout
+
+% Divides each row by negative of the diagonal value
+\end_layout
+
+\begin_layout Plain Layout
+
+% Note: the diagonals cannot be zero...
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1:N
+\end_layout
+
+\begin_layout Plain Layout
+
+    for j = 1:M
+\end_layout
+
+\begin_layout Plain Layout
+
+        A_new(i, j) = -1 * A(i,j)/A(i,i);
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    A_new(i, i) = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initialize the initial answer to 0, and the coefficient matrices
+\end_layout
+
+\begin_layout Plain Layout
+
+x_bak = ones(N,1);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Now we start the Gauss Seidel iteration
+\end_layout
+
+\begin_layout Plain Layout
+
+% (note: first iteration is guessing zeros)
+\end_layout
+
+\begin_layout Plain Layout
+
+counter = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+x_new = zeros(N,1);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Loop until the convergence is less than the tolerance required
+\end_layout
+
+\begin_layout Plain Layout
+
+while (max(abs(x_new-x_bak) > toler)) && (counter < 100000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    counter = counter + 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+    x_bak = x_new;      % to back up x_old so we can compare to it later
+\end_layout
+
+\begin_layout Plain Layout
+
+    for i = 1:N        % this for loop is to calculate each of x_new(i)
+\end_layout
+
+\begin_layout Plain Layout
+
+        temp = 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        % This loop is the matrix multiplication of each row and column
+\end_layout
+
+\begin_layout Plain Layout
+
+        for j = 1:M
+\end_layout
+
+\begin_layout Plain Layout
+
+            temp = temp + A_new(i,j)*x_new(j);
+\end_layout
+
+\begin_layout Plain Layout
+
+        end
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Then we need to add on the original d element
+\end_layout
+
+\begin_layout Plain Layout
+
+        x_new(i) = temp + d(i)/A(i,i);
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Return the results
+\end_layout
+
+\begin_layout Plain Layout
+
+x = x_new;
+\end_layout
+
+\begin_layout Plain Layout
+
+disp(counter);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The solutions to the problem using the Gauss-Seidel method is
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>> tic; [x_sol, num_iter]=GaussSeidel(A, d', 1.e-6); toc;
+\end_layout
+
+\begin_layout Plain Layout
+
+    16
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Elapsed time is 0.005245 seconds.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "30col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+x_sol (1 to 20)
+\end_layout
+
+\begin_layout Plain Layout
+-21.2839
+\end_layout
+
+\begin_layout Plain Layout
+-14.8645
+\end_layout
+
+\begin_layout Plain Layout
+-15.8682
+\end_layout
+
+\begin_layout Plain Layout
+-14.8829
+\end_layout
+
+\begin_layout Plain Layout
+-14.4306
+\end_layout
+
+\begin_layout Plain Layout
+-13.8354
+\end_layout
+
+\begin_layout Plain Layout
+-13.2785
+\end_layout
+
+\begin_layout Plain Layout
+-12.7114
+\end_layout
+
+\begin_layout Plain Layout
+-12.1470
+\end_layout
+
+\begin_layout Plain Layout
+-11.5819
+\end_layout
+
+\begin_layout Plain Layout
+-11.0170
+\end_layout
+
+\begin_layout Plain Layout
+-10.4520
+\end_layout
+
+\begin_layout Plain Layout
+-9.8870
+\end_layout
+
+\begin_layout Plain Layout
+-9.3220
+\end_layout
+
+\begin_layout Plain Layout
+-8.7571
+\end_layout
+
+\begin_layout Plain Layout
+-8.1921
+\end_layout
+
+\begin_layout Plain Layout
+-7.6271
+\end_layout
+
+\begin_layout Plain Layout
+-7.0621
+\end_layout
+
+\begin_layout Plain Layout
+-6.4972
+\end_layout
+
+\begin_layout Plain Layout
+-5.9322
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "30col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+x_sol (21 to 40)
+\end_layout
+
+\begin_layout Plain Layout
+-5.3672
+\end_layout
+
+\begin_layout Plain Layout
+-4.8023
+\end_layout
+
+\begin_layout Plain Layout
+-4.2373
+\end_layout
+
+\begin_layout Plain Layout
+-3.6723
+\end_layout
+
+\begin_layout Plain Layout
+-3.1073
+\end_layout
+
+\begin_layout Plain Layout
+-2.5424
+\end_layout
+
+\begin_layout Plain Layout
+-1.9774
+\end_layout
+
+\begin_layout Plain Layout
+-1.4124
+\end_layout
+
+\begin_layout Plain Layout
+-0.8475
+\end_layout
+
+\begin_layout Plain Layout
+-0.2825
+\end_layout
+
+\begin_layout Plain Layout
+0.2825
+\end_layout
+
+\begin_layout Plain Layout
+0.8475
+\end_layout
+
+\begin_layout Plain Layout
+1.4124
+\end_layout
+
+\begin_layout Plain Layout
+1.9774
+\end_layout
+
+\begin_layout Plain Layout
+2.5424
+\end_layout
+
+\begin_layout Plain Layout
+3.1073
+\end_layout
+
+\begin_layout Plain Layout
+3.6723
+\end_layout
+
+\begin_layout Plain Layout
+4.2373
+\end_layout
+
+\begin_layout Plain Layout
+4.8023
+\end_layout
+
+\begin_layout Plain Layout
+5.3672
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "30col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+x_sol (41 to 60)
+\end_layout
+
+\begin_layout Plain Layout
+5.9322
+\end_layout
+
+\begin_layout Plain Layout
+6.4972
+\end_layout
+
+\begin_layout Plain Layout
+7.0621
+\end_layout
+
+\begin_layout Plain Layout
+7.6271
+\end_layout
+
+\begin_layout Plain Layout
+8.1921
+\end_layout
+
+\begin_layout Plain Layout
+8.7571
+\end_layout
+
+\begin_layout Plain Layout
+9.3220
+\end_layout
+
+\begin_layout Plain Layout
+9.8870
+\end_layout
+
+\begin_layout Plain Layout
+10.4520
+\end_layout
+
+\begin_layout Plain Layout
+11.0170
+\end_layout
+
+\begin_layout Plain Layout
+11.5819
+\end_layout
+
+\begin_layout Plain Layout
+12.1470
+\end_layout
+
+\begin_layout Plain Layout
+12.7114
+\end_layout
+
+\begin_layout Plain Layout
+13.2785
+\end_layout
+
+\begin_layout Plain Layout
+13.8354
+\end_layout
+
+\begin_layout Plain Layout
+14.4306
+\end_layout
+
+\begin_layout Plain Layout
+14.8829
+\end_layout
+
+\begin_layout Plain Layout
+15.8682
+\end_layout
+
+\begin_layout Plain Layout
+14.8645
+\end_layout
+
+\begin_layout Plain Layout
+21.2839
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The solution to the problem using the Jacobian Method is
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>> tic; [x_sol, num_iter]=Jacobi(A, d', 1.e-6); toc;
+\end_layout
+
+\begin_layout Plain Layout
+
+    26
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Elapsed time is 0.044260 seconds.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "30col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+x_sol (1 to 20)
+\end_layout
+
+\begin_layout Plain Layout
+-21.2839
+\end_layout
+
+\begin_layout Plain Layout
+-14.8645
+\end_layout
+
+\begin_layout Plain Layout
+-15.8682
+\end_layout
+
+\begin_layout Plain Layout
+-14.8829
+\end_layout
+
+\begin_layout Plain Layout
+-14.4306
+\end_layout
+
+\begin_layout Plain Layout
+-13.8354
+\end_layout
+
+\begin_layout Plain Layout
+-13.2785
+\end_layout
+
+\begin_layout Plain Layout
+-12.7114
+\end_layout
+
+\begin_layout Plain Layout
+-12.1470
+\end_layout
+
+\begin_layout Plain Layout
+-11.5819
+\end_layout
+
+\begin_layout Plain Layout
+-11.0170
+\end_layout
+
+\begin_layout Plain Layout
+-10.4520
+\end_layout
+
+\begin_layout Plain Layout
+-9.8870
+\end_layout
+
+\begin_layout Plain Layout
+-9.3220
+\end_layout
+
+\begin_layout Plain Layout
+-8.7571
+\end_layout
+
+\begin_layout Plain Layout
+-8.1921
+\end_layout
+
+\begin_layout Plain Layout
+-7.6271
+\end_layout
+
+\begin_layout Plain Layout
+-7.0621
+\end_layout
+
+\begin_layout Plain Layout
+-6.4972
+\end_layout
+
+\begin_layout Plain Layout
+-5.9322
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "30col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+x_sol (21 to 40)
+\end_layout
+
+\begin_layout Plain Layout
+-5.3672
+\end_layout
+
+\begin_layout Plain Layout
+-4.8023
+\end_layout
+
+\begin_layout Plain Layout
+-4.2373
+\end_layout
+
+\begin_layout Plain Layout
+-3.6723
+\end_layout
+
+\begin_layout Plain Layout
+-3.1073
+\end_layout
+
+\begin_layout Plain Layout
+-2.5424
+\end_layout
+
+\begin_layout Plain Layout
+-1.9774
+\end_layout
+
+\begin_layout Plain Layout
+-1.4124
+\end_layout
+
+\begin_layout Plain Layout
+-0.8475
+\end_layout
+
+\begin_layout Plain Layout
+-0.2825
+\end_layout
+
+\begin_layout Plain Layout
+0.2825
+\end_layout
+
+\begin_layout Plain Layout
+0.8475
+\end_layout
+
+\begin_layout Plain Layout
+1.4124
+\end_layout
+
+\begin_layout Plain Layout
+1.9774
+\end_layout
+
+\begin_layout Plain Layout
+2.5424
+\end_layout
+
+\begin_layout Plain Layout
+3.1073
+\end_layout
+
+\begin_layout Plain Layout
+3.6723
+\end_layout
+
+\begin_layout Plain Layout
+4.2373
+\end_layout
+
+\begin_layout Plain Layout
+4.8023
+\end_layout
+
+\begin_layout Plain Layout
+5.3672
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "30col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+x_sol (41 to 60)
+\end_layout
+
+\begin_layout Plain Layout
+5.9322
+\end_layout
+
+\begin_layout Plain Layout
+6.4972
+\end_layout
+
+\begin_layout Plain Layout
+7.0621
+\end_layout
+
+\begin_layout Plain Layout
+7.6271
+\end_layout
+
+\begin_layout Plain Layout
+8.1921
+\end_layout
+
+\begin_layout Plain Layout
+8.7571
+\end_layout
+
+\begin_layout Plain Layout
+9.3220
+\end_layout
+
+\begin_layout Plain Layout
+9.8870
+\end_layout
+
+\begin_layout Plain Layout
+10.4520
+\end_layout
+
+\begin_layout Plain Layout
+11.0170
+\end_layout
+
+\begin_layout Plain Layout
+11.5819
+\end_layout
+
+\begin_layout Plain Layout
+12.1470
+\end_layout
+
+\begin_layout Plain Layout
+12.7114
+\end_layout
+
+\begin_layout Plain Layout
+13.2785
+\end_layout
+
+\begin_layout Plain Layout
+13.8354
+\end_layout
+
+\begin_layout Plain Layout
+14.4306
+\end_layout
+
+\begin_layout Plain Layout
+14.8829
+\end_layout
+
+\begin_layout Plain Layout
+15.8682
+\end_layout
+
+\begin_layout Plain Layout
+14.8645
+\end_layout
+
+\begin_layout Plain Layout
+21.2839
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Thus, it is clear that both methods arrive at the same result, however they
+ significantly differ in the computational time and effort required.
+ The Gauss-Seidel method only requires 16 iterations as compared to Jacobi
+ which takes 26.
+ It can also be seen that even though this is less than double the iterations,
+ it takes almost ten times as much time to compute the solution to an accuracy
+ of 
+\begin_inset Formula $1\times10^{-6}$
+\end_inset
+
+, 0.044260 compared to 0.005245.
+\end_layout
+
+\begin_layout Problem
+As such, it is clear for this problem the Gauss-Seidel method is superior
+ as it converges faster by updating the 
+\begin_inset Formula $x$
+\end_inset
+
+ value after each row rather than each matrix multiplication.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+False Position Method
+\end_layout
+
+\begin_layout Problem
+The MATLAB m-file solution is given below
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function root = false_pos(func,x1,x2,toler)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Function that uses the False Position Method to determine the root of
+ a function
+\end_layout
+
+\begin_layout Plain Layout
+
+% Inputs:
+\end_layout
+
+\begin_layout Plain Layout
+
+% func <- Function that takes a single variable
+\end_layout
+
+\begin_layout Plain Layout
+
+% x1 <- Lower x initial boundary
+\end_layout
+
+\begin_layout Plain Layout
+
+% x2 <- Upper x initial boundary
+\end_layout
+
+\begin_layout Plain Layout
+
+% toler <- Required tolerance
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Determine the initial values of f_x1, and f_x2
+\end_layout
+
+\begin_layout Plain Layout
+
+f_x1 = feval(func,x1);
+\end_layout
+
+\begin_layout Plain Layout
+
+f_x2 = feval(func,x2);
+\end_layout
+
+\begin_layout Plain Layout
+
+f_xr = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+current_loop = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+% use a "While loop" to loop through the False Position method
+\end_layout
+
+\begin_layout Plain Layout
+
+while (abs(f_xr) > toler)
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Estimate next value of x using False Position
+\end_layout
+
+\begin_layout Plain Layout
+
+    xr = x2 - (f_x2*(x1 - x2))/(f_x1 - f_x2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    f_xr =  feval(func,xr);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Determine which side of the root xr is on.
+\end_layout
+
+\begin_layout Plain Layout
+
+    % and from this information set the new
+\end_layout
+
+\begin_layout Plain Layout
+
+    % brackets for the next iteration.
+\end_layout
+
+\begin_layout Plain Layout
+
+    if ((f_x1*f_xr) < 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        x2 = xr;
+\end_layout
+
+\begin_layout Plain Layout
+
+        f_x2 = f_xr;
+\end_layout
+
+\begin_layout Plain Layout
+
+    else
+\end_layout
+
+\begin_layout Plain Layout
+
+        x1 = xr;
+\end_layout
+
+\begin_layout Plain Layout
+
+        f_x1=f_xr;
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Display current loop information
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('%5d %10.4f
+\backslash
+n',current_loop,xr)
+\end_layout
+
+\begin_layout Plain Layout
+
+    current_loop = current_loop + 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+root = xr;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Answers to individual functions:
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>> func1 = @(x) cos(1./x);
+\end_layout
+
+\begin_layout Plain Layout
+
+xp = 0.1:0.1:2;
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(xp,func1(xp))
+\end_layout
+
+\begin_layout Plain Layout
+
+false_pos(func1,0.1,2,1.e-12)
+\end_layout
+
+\begin_layout Plain Layout
+
+    1     1.0287
+\end_layout
+
+\begin_layout Plain Layout
+
+    2     0.6556
+\end_layout
+
+\begin_layout Plain Layout
+
+    3     0.6271
+\end_layout
+
+\begin_layout Plain Layout
+
+    4     0.6369
+\end_layout
+
+\begin_layout Plain Layout
+
+    5     0.6366
+\end_layout
+
+\begin_layout Plain Layout
+
+    6     0.6366
+\end_layout
+
+\begin_layout Plain Layout
+
+    7     0.6366
+\end_layout
+
+\begin_layout Plain Layout
+
+    8     0.6366
+\end_layout
+
+\begin_layout Plain Layout
+
+    9     0.6366
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ans =
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.6366
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It can be seen that the solution is 0.6366 and takes 9 iterations.
+ 
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>> func2 = @(x) (x-1).^5;
+\end_layout
+
+\begin_layout Plain Layout
+
+xp = 0.1:0.1:2;
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(xp,func2(xp))
+\end_layout
+
+\begin_layout Plain Layout
+
+false_pos(func2,0.1,2,1.e-12)
+\end_layout
+
+\begin_layout Plain Layout
+
+    1     0.8054
+\end_layout
+
+\begin_layout Plain Layout
+
+    2     0.8057
+\end_layout
+
+\begin_layout Plain Layout
+
+    3     0.8061
+\end_layout
+
+\begin_layout Plain Layout
+
+    4     0.8064
+\end_layout
+
+\begin_layout Plain Layout
+
+    5     0.8067
+\end_layout
+
+\begin_layout Plain Layout
+
+    6     0.8070
+\end_layout
+
+\begin_layout Plain Layout
+
+    7     0.8074
+\end_layout
+
+\begin_layout Plain Layout
+
+    8     0.8077
+\end_layout
+
+\begin_layout Plain Layout
+
+    9     0.8080
+\end_layout
+
+\begin_layout Plain Layout
+
+   10     0.8083
+\end_layout
+
+\begin_layout Plain Layout
+
+   11     0.8086
+\end_layout
+
+\begin_layout Plain Layout
+
+   12     0.8089
+\end_layout
+
+\begin_layout Plain Layout
+
+   13     0.8092
+\end_layout
+
+\begin_layout Plain Layout
+
+   14     0.8095
+\end_layout
+
+\begin_layout Plain Layout
+
+   15     0.8098
+\end_layout
+
+\begin_layout Plain Layout
+
+   16     0.8101
+\end_layout
+
+\begin_layout Plain Layout
+
+   17     0.8104
+\end_layout
+
+\begin_layout Plain Layout
+
+   18     0.8107
+\end_layout
+
+\begin_layout Plain Layout
+
+   19     0.8110
+\end_layout
+
+\begin_layout Plain Layout
+
+   20     0.8113
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It can be seen that the function does not appear to have a solution as the
+ root diverges as the iterations increase.
+ The reason for this can be seen when the graph is considered (shown below).
+ The false position method uses an line to connect two points on either
+ side of the root, however it can be seen here that such a line would be
+ almost parallel with the root.
+ As such, when the iterations increase and the braket size decreases, the
+ connecting line moves closer and closer to the graph (and parallel to the
+ x-axis).
+ As such, any changes in 
+\begin_inset Formula $x$
+\end_inset
+
+ would be minimal meaning it will take a long time to converge to an accepted
+ tolerance.
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 1 Question 2 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>> func3 = @(x) 3*cos(2*x).*exp(x);
+\end_layout
+
+\begin_layout Plain Layout
+
+xp = 0.1:0.1:2;
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(xp,func3(xp))
+\end_layout
+
+\begin_layout Plain Layout
+
+false_pos(func3,0.1,2,1.e-12)
+\end_layout
+
+\begin_layout Plain Layout
+
+    1     0.4480
+\end_layout
+
+\begin_layout Plain Layout
+
+    2     0.7093
+\end_layout
+
+\begin_layout Plain Layout
+
+    3     0.7867
+\end_layout
+
+\begin_layout Plain Layout
+
+    4     0.7853
+\end_layout
+
+\begin_layout Plain Layout
+
+    5     0.7854
+\end_layout
+
+\begin_layout Plain Layout
+
+    6     0.7854
+\end_layout
+
+\begin_layout Plain Layout
+
+    7     0.7854
+\end_layout
+
+\begin_layout Plain Layout
+
+    8     0.7854
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ans =
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.7854
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It can be seen that the solution to this function is 0.7854 and converges
+ to the required accuracy in 8 iterations.
+\end_layout
+
+\begin_layout Section
+Laboratory 2
+\end_layout
+
+\begin_layout Problem
+Lagrange Interpolation
+\end_layout
+
+\begin_layout Problem
+(1) See Appendix 2
+\end_layout
+
+\begin_layout Problem
+(2) MATLAB m-code solution
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [y_ii] = Lagrange(x, y, x_ii)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Function that uses the Lagrange Method interpoation from previous data
+\end_layout
+
+\begin_layout Plain Layout
+
+% x <- x values (vector)
+\end_layout
+
+\begin_layout Plain Layout
+
+% y <- y values (vector)
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_ii <- required interpolation point
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+n = length(x);  % Number of required iterations
+\end_layout
+
+\begin_layout Plain Layout
+
+R = 0; % Preallocating for size
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1:n
+\end_layout
+
+\begin_layout Plain Layout
+
+    L = y(i);
+\end_layout
+
+\begin_layout Plain Layout
+
+    for j = 1:n
+\end_layout
+
+\begin_layout Plain Layout
+
+        if i ~= j
+\end_layout
+
+\begin_layout Plain Layout
+
+            L = L.*(x_ii-x(j))/(x(i)-x(j));
+\end_layout
+
+\begin_layout Plain Layout
+
+        end
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    R = R  + L;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+y_ii = R;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+This MATLAB function can be seen in action solving the same interpolation.
+ The code and output are shown below and it is clear that the Lagrange method
+ appears to add large amounts of noise between 
+\begin_inset Formula $x=0,\,x=1$
+\end_inset
+
+ and 
+\begin_inset Formula $x=1.5,\,x=3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x = [0, 1, 1.5, 3];
+\end_layout
+
+\begin_layout Plain Layout
+
+y = [1, 1, 15, 15];
+\end_layout
+
+\begin_layout Plain Layout
+
+x_ii = 0:0.1:3;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+stem(x, y)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(x_ii,Lagrange(x, y, x_ii))
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 2 Question 1 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Cubic Spline Interpolation
+\end_layout
+
+\begin_layout Problem
+See Appendix 3 for hand calculations.
+ 
+\end_layout
+
+\begin_layout Problem
+The solution has been plotted using MATLAB with the code and plot shown
+ below.
+ It can be seen that using the Cubic Spline Method there is much less noise
+ compared to the Lagrange interpretation for the apparent horizontal sections
+ between 
+\begin_inset Formula $x=0,\,x=1$
+\end_inset
+
+ and 
+\begin_inset Formula $x=1.5,\,x=3$
+\end_inset
+
+.
+ The reason for this is because it fits individual functions to each section
+ rather than attempting to fit a single polynomial to the entire data.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+func1 = @(x) 10.72*x.^3 + (1-x) - 9.72*x;
+\end_layout
+
+\begin_layout Plain Layout
+
+func2 = @(x) 21.45*(1.5-x).^3 - 16.68*(x-1).^3 - 3.36*(1.5 - x) + 34.17*(x-1);
+\end_layout
+
+\begin_layout Plain Layout
+
+func3 = @(x) -5.56*(3-x).^3 + 22.51*(3-x) + 10*(x - 1.5);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+stem(x, y)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(0:0.1:1, func1(0:0.1:1))
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(1:0.1:1.5, func2(1:0.1:1.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(1.5:0.1:3, func3(1.5:0.1:3))
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 2 Question 2 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,1583 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\begin_preamble
+\usepackage[framed, numbered]{matlab-prettifier}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "palatino" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "style={Matlab-editor}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MAE2403 Lab 3 and 4
+\end_layout
+
+\begin_layout Author
+Alwin Wang
+\begin_inset Newline newline
+\end_inset
+
+2510 2176
+\end_layout
+
+\begin_layout Date
+1st September 2016
+\end_layout
+
+\begin_layout Section
+Laboratory 3
+\end_layout
+
+\begin_layout Problem
+Recursive Trapezoidal Rule and Romberg's Integration
+\end_layout
+
+\begin_layout Problem
+(1) Hand Calculation: See Appendix 1
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Recursive Trapezoidal Rule and Romberg's Integration
+\end_layout
+
+\begin_layout Problem
+(a) The MATLAB m-file solution that implements the recursive trapezoidal
+ rule is as follows
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+lstparams "style={Matlab-editor}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [result,n]=RecurTrapzd(func, a, b, toler)
+\end_layout
+
+\begin_layout Plain Layout
+
+% This function finds the integration value using the recursive trapezium
+\end_layout
+
+\begin_layout Plain Layout
+
+% method.
+ Requires the trapzd.m file
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initialise the sum as zero
+\end_layout
+
+\begin_layout Plain Layout
+
+j = 0;  % Initial j value
+\end_layout
+
+\begin_layout Plain Layout
+
+s = 0;  % Previous value to compare to
+\end_layout
+
+\begin_layout Plain Layout
+
+s_new = 1; % New integral value (10 abritarily chosen)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+while abs(s_new - s) > toler
+\end_layout
+
+\begin_layout Plain Layout
+
+    j = j + 1;  % Increase J
+\end_layout
+
+\begin_layout Plain Layout
+
+    s = s_new;  % Save old integral value
+\end_layout
+
+\begin_layout Plain Layout
+
+    s_new = trapzd(func,a,b,s,j); % Find new integral
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('j = %2d, s = %8.6f, s_new = %8.6f
+\backslash
+n', j, s, s_new); 
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+result = s_new;
+\end_layout
+
+\begin_layout Plain Layout
+
+n = j - 1;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+This function is called for the integration of the area under the ellipse
+ and is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>>  func1 = @(x) sqrt(1 - 4*x.^2);
+\end_layout
+
+\begin_layout Plain Layout
+
+>>  tic;
+\end_layout
+
+\begin_layout Plain Layout
+
+>>  [result,n] = RecurTrapzd(func1, -0.5, 0.5, 10^-4);
+\end_layout
+
+\begin_layout Plain Layout
+
+>>  toc;
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  1, s = 1.000000, s_new = 0.000000
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  2, s = 0.000000, s_new = 0.500000
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  3, s = 0.500000, s_new = 0.683013
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  4, s = 0.683013, s_new = 0.748927
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  5, s = 0.748927, s_new = 0.772455
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  6, s = 0.772455, s_new = 0.780813
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  7, s = 0.780813, s_new = 0.783776
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  8, s = 0.783776, s_new = 0.784824
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  9, s = 0.784824, s_new = 0.785195
+\end_layout
+
+\begin_layout Plain Layout
+
+j = 10, s = 0.785195, s_new = 0.785326
+\end_layout
+
+\begin_layout Plain Layout
+
+j = 11, s = 0.785326, s_new = 0.785373
+\end_layout
+
+\begin_layout Plain Layout
+
+Elapsed time is 0.052868 seconds.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(b) The MATLAB m-file solution that implements Simpson's rule is as follows
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [result,n]=RombergSimp(func, a, b, toler)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Computes the value of an integral using the Simpson's Rule
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Intialization of algorithim
+\end_layout
+
+\begin_layout Plain Layout
+
+simp = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+j = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+s = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+s1 =  trapzd(func,a,b,s,j);
+\end_layout
+
+\begin_layout Plain Layout
+
+simp1 = (4*s1-s)/3;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% While loop until tolerance limit is met
+\end_layout
+
+\begin_layout Plain Layout
+
+while abs(simp1 - simp) > toler
+\end_layout
+
+\begin_layout Plain Layout
+
+    j = j+1;    % increase j
+\end_layout
+
+\begin_layout Plain Layout
+
+    s = s1;     % save the old trap result
+\end_layout
+
+\begin_layout Plain Layout
+
+    simp = simp1; % save the old simpson's result
+\end_layout
+
+\begin_layout Plain Layout
+
+    s1 =  trapzd(func,a,b,s,j); % New trapzium value
+\end_layout
+
+\begin_layout Plain Layout
+
+    simp1 = (4*s1-s)/3; % Using Romberg's method rather than writing a new
+ loop
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('j = %2d, simp = %8.6f, simp1 = %8.6f
+\backslash
+n', j, simp, simp1); 
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+result = simp1;
+\end_layout
+
+\begin_layout Plain Layout
+
+n = j-1;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+This function is called for the integration of the area under the ellipse
+ and is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>>  func1 = @(x) sqrt(1 - 4*x.^2);
+\end_layout
+
+\begin_layout Plain Layout
+
+>>  tic;
+\end_layout
+
+\begin_layout Plain Layout
+
+>>  [result,n] = RombergSimp(func1, -0.5, 0.5, 10^-4);
+\end_layout
+
+\begin_layout Plain Layout
+
+>>  toc;
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  2, simp = 0.000000, simp1 = 0.666667
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  3, simp = 0.666667, simp1 = 0.744017
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  4, simp = 0.744017, simp1 = 0.770899
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  5, simp = 0.770899, simp1 = 0.780297
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  6, simp = 0.780297, simp1 = 0.783599
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  7, simp = 0.783599, simp1 = 0.784763
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  8, simp = 0.784763, simp1 = 0.785174
+\end_layout
+
+\begin_layout Plain Layout
+
+j =  9, simp = 0.785174, simp1 = 0.785319
+\end_layout
+
+\begin_layout Plain Layout
+
+j = 10, simp = 0.785319, simp1 = 0.785370
+\end_layout
+
+\begin_layout Plain Layout
+
+Elapsed time is 0.047766 seconds.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Thus, it is clear that both methods arrive at similar results and they are
+ the same when rounded to 4 decimal places (the tolerance used was 
+\begin_inset Formula $10^{-4}$
+\end_inset
+
+).
+ However, it is also clear that the efficiency of the methods differs for
+ this example.
+ 
+\end_layout
+
+\begin_layout Problem
+The Recursive Trapezoidal Rule requires 11 iterations while Romberg Simpson's
+ Rule only requires 10 iterations.
+ In addition, when using Simpson's Rule the integral converged marginally
+ faster than the Trapezoidal Rule.
+ This can be attributed to a better integral approximation (smaller error)
+ of Simpson's Rule.
+ 
+\end_layout
+
+\begin_layout Section
+Laboratory 4
+\end_layout
+
+\begin_layout Problem
+Gaussian Quadrature
+\end_layout
+
+\begin_layout Problem
+(a) See Appendix 2
+\end_layout
+
+\begin_layout Problem
+(b) MATLAB m-code solution for 2, 3, 4, 5-point Gauss integration.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function result = GaussQuad(func, a, b, n)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Gauss Quadrature Technique of integration
+\end_layout
+
+\begin_layout Plain Layout
+
+% func: the function to be integrated
+\end_layout
+
+\begin_layout Plain Layout
+
+% a: lower limit
+\end_layout
+
+\begin_layout Plain Layout
+
+% b: upper limit
+\end_layout
+
+\begin_layout Plain Layout
+
+% n: number of points used in the Gauss Quadrature integration
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Determine which case depending on the number of points
+\end_layout
+
+\begin_layout Plain Layout
+
+switch n
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Two point integral
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 2
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(1) = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(2)= 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(1)= -0.577350269;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(2)= 0.577350269;
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Three point integral
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 3
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(1)= 0.5555556;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(2)= 0.8888889;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(3)= 0.5555556;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(1)= -0.774596669;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(2)=0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(3)= 0.774596669; 
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Four point integral
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 4
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(1)= 0.3478548;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(2)= 0.6521452;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(3)= 0.6521452;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(4)= 0.3478548;     
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(1)= -0.861136312;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(2)= -0.339981044;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(3)= 0.339981044;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(4)= 0.861136312; 
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Five point integral
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 5
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(1)= 0.2369269;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(2)= 0.4786287;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(3)= 0.5688889;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(4)= 0.4786287;
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(5)= 0.2369269;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(1)= -0.906179846;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(2)= -0.538469310;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(3)= 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(4)= 0.538469310;
+\end_layout
+
+\begin_layout Plain Layout
+
+        x(5)= 0.906179846; 
+\end_layout
+
+\begin_layout Plain Layout
+
+ end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Change of variables
+\end_layout
+
+\begin_layout Plain Layout
+
+xm = 0.5*(b+a);
+\end_layout
+
+\begin_layout Plain Layout
+
+xr = 0.5*(b-a);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Intialization of algorithim
+\end_layout
+
+\begin_layout Plain Layout
+
+sum = 0; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% For loop used to do Gauss Quadrature Sum
+\end_layout
+
+\begin_layout Plain Layout
+
+for j = 1:n
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Transform the x, apply a function and sum
+\end_layout
+
+\begin_layout Plain Layout
+
+    sum = sum + c(j)*(func(xm+xr*x(j)));
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+result = xr*sum;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(c) This MATLAB function can be seen in action solving the flow rates for
+ both laminar and turbulent flows.
+ This is achieved by creating a new m-file in order to efficiently calculate
+ both.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% Declare the functionns
+\end_layout
+
+\begin_layout Plain Layout
+
+laminar = @(x) 2*pi* x * (1 - x / 0.25)^(2) * 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+turbulent = @(x) 2*pi* x * (1 - x / 0.25)^(1/5) * 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Laminar Solutions
+\end_layout
+
+\begin_layout Plain Layout
+
+for n = 2:5
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('n = %2d, laminar = %6.8f
+\backslash
+n', n, GaussQuad(laminar, 0, 0.25, n));
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+% Turbulent Solutions
+\end_layout
+
+\begin_layout Plain Layout
+
+for n = 2:5
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('n = %2d, turbulent = %6.8f
+\backslash
+n', n, GaussQuad(turbulent, 0, 0.25, n));
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The command window output can be seen below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+n =  2, laminar = 0.32724923
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  3, laminar = 0.32724925
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  4, laminar = 0.32724925
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  5, laminar = 0.32724925
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  2, turbulent = 1.53049154
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  3, turbulent = 1.50521158
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  4, turbulent = 1.49690283
+\end_layout
+
+\begin_layout Plain Layout
+
+n =  5, turbulent = 1.49322349
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+From the output, it is clear that for the laminar flow the integral was
+ the same value for 
+\begin_inset Formula $n=3$
+\end_inset
+
+ to 
+\begin_inset Formula $n=5$
+\end_inset
+
+.
+ The primary reason identified is that the integrand 
+\begin_inset Formula $2\pi\left[r\times\left(1-\frac{r}{R}\right)^{2}U\right]$
+\end_inset
+
+ is a polynomial of order 
+\begin_inset Formula $2$
+\end_inset
+
+.
+ Thus, it was expected that the Gauss quadrature method would determine
+ the exact value.
+ This value of 
+\begin_inset Formula $0.32724925$
+\end_inset
+
+ is also consistent with the given exact value of 
+\begin_inset Formula $0.327249$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+However, it is seen that the turbulent flow integral does not appear to
+ converge to a constant value as it changes from 
+\begin_inset Formula $n=2$
+\end_inset
+
+ to 
+\begin_inset Formula $n=5$
+\end_inset
+
+.
+ This can be explained by the nature of the integrand 
+\begin_inset Formula $2\pi\left[r\times\left(1-\frac{r}{R}\right)^{\frac{1}{5}}U\right]$
+\end_inset
+
+.
+ Clearly this is not a polynomial and it is known that the Gauss quadrature
+ method with 
+\begin_inset Formula $n$
+\end_inset
+
+ points only provides an exact answer for polynomials of degree 
+\begin_inset Formula $2n-1$
+\end_inset
+
+ or less.
+ Thus, even the 5 point method estimation, 
+\begin_inset Formula $Q\approx1.49322349$
+\end_inset
+
+, is still far from the given exact answer of 
+\begin_inset Formula $Q=1.487497$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Heun's Method
+\end_layout
+
+\begin_layout Problem
+(1) See Appendix 3 for hand calculations.
+ 
+\end_layout
+
+\begin_layout Problem
+(2) The solution using Heun method in MATLAB is shown below with 4 iterations
+ applied in every corrector step.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function [x, y]=Heun(func, y_init, x_init, x_end, nstep)
+\end_layout
+
+\begin_layout Plain Layout
+
+% Function of the Heun Method
+\end_layout
+
+\begin_layout Plain Layout
+
+% func: the ODE to be solved
+\end_layout
+
+\begin_layout Plain Layout
+
+% y_init: Initial y value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_init: Inital x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% x_end: Final x value
+\end_layout
+
+\begin_layout Plain Layout
+
+% nstep: No.
+ of steps to get from x_init to x_end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Pre allocating matrix and intitializing algorithim
+\end_layout
+
+\begin_layout Plain Layout
+
+x = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+y0 = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+y = 1:nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initial values (BCs)
+\end_layout
+
+\begin_layout Plain Layout
+
+x(1) = x_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+y0(1) = y_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+y(1) = y_init;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Finding step size
+\end_layout
+
+\begin_layout Plain Layout
+
+h = (x_end - x_init) / nstep;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% For loop used to represent Heun's Method
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1 : nstep
+\end_layout
+
+\begin_layout Plain Layout
+
+    x(i+1) = x(i) + h;
+\end_layout
+
+\begin_layout Plain Layout
+
+    y0(i+1) = y(i) + h * (func(x(i),y(i)));
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Apply 4 corrections
+\end_layout
+
+\begin_layout Plain Layout
+
+    for j = 1:4 
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Make a correction based on the old y0
+\end_layout
+
+\begin_layout Plain Layout
+
+        y(i+1) = y(i)+ (func(x(i),y(i)) + func(x(i+1),y0(i+1)))*h/2;
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Update the old y0 to the new y
+\end_layout
+
+\begin_layout Plain Layout
+
+        y0(i+1) = y(i+1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+(3) The Heun and Euler methods are used in order to solve for the given
+ ODE.
+ The m-file used to tabulate 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ coordinates as well as produce plots of the solutions is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% ODE Function
+\end_layout
+
+\begin_layout Plain Layout
+
+func = @(x, y) 4*exp(0.8*x) - 0.5*y;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Figure 1: Heun Method
+\end_layout
+
+\begin_layout Plain Layout
+
+figure(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1:6
+\end_layout
+
+\begin_layout Plain Layout
+
+    n = 2^i;
+\end_layout
+
+\begin_layout Plain Layout
+
+    [x, y] = Heun(func, 0, 0, 6, n);
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('Heun, n = %2d, x = %6.4f, y = %6.4f
+\backslash
+n', n, x(end), y(end));
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(x, y, 'DisplayName', ['n = ' num2str(n)])
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+legend(gca,'show', 'Location', 'Best')
+\end_layout
+
+\begin_layout Plain Layout
+
+title('Heun Method')
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\begin_layout Plain Layout
+
+% Figure 2: Euler Method
+\end_layout
+
+\begin_layout Plain Layout
+
+figure(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on
+\end_layout
+
+\begin_layout Plain Layout
+
+for i = 1:6
+\end_layout
+
+\begin_layout Plain Layout
+
+    n = 2^i;
+\end_layout
+
+\begin_layout Plain Layout
+
+    [x, y] = euler(func, 0, 0, 6, n);
+\end_layout
+
+\begin_layout Plain Layout
+
+    fprintf('Euler, n = %2d, x = %6.4f, y = %6.4f
+\backslash
+n', n, x(end), y(end));
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(x, y, 'DisplayName', ['n = ' num2str(n)])
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+legend(gca,'show', 'Location', 'Best')
+\end_layout
+
+\begin_layout Plain Layout
+
+title('Euler Method')
+\end_layout
+
+\begin_layout Plain Layout
+
+hold off
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The output of this script is displayed below and the graphs are displayed
+ on the following page.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Heun, n =  2, x = 6.0000, y = 350.5432
+\end_layout
+
+\begin_layout Plain Layout
+
+Heun, n =  4, x = 6.0000, y = 396.1173
+\end_layout
+
+\begin_layout Plain Layout
+
+Heun, n =  8, x = 6.0000, y = 380.4124
+\end_layout
+
+\begin_layout Plain Layout
+
+Heun, n = 16, x = 6.0000, y = 375.4408
+\end_layout
+
+\begin_layout Plain Layout
+
+Heun, n = 32, x = 6.0000, y = 374.1560
+\end_layout
+
+\begin_layout Plain Layout
+
+Heun, n = 64, x = 6.0000, y = 373.8329
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Euler, n =  2, x = 6.0000, y = 126.2781
+\end_layout
+
+\begin_layout Plain Layout
+
+Euler, n =  4, x = 6.0000, y = 237.4630
+\end_layout
+
+\begin_layout Plain Layout
+
+Euler, n =  8, x = 6.0000, y = 304.4488
+\end_layout
+
+\begin_layout Plain Layout
+
+Euler, n = 16, x = 6.0000, y = 339.0872
+\end_layout
+
+\begin_layout Plain Layout
+
+Euler, n = 32, x = 6.0000, y = 356.4409
+\end_layout
+
+\begin_layout Plain Layout
+
+Euler, n = 64, x = 6.0000, y = 365.0958
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It is clear that the Heun Method approaches the true value of 
+\begin_inset Formula $y=373.8740$
+\end_inset
+
+ at 
+\begin_inset Formula $x=6$
+\end_inset
+
+ much faster than the Euler Method.
+ This not only indicates that the Heun Method is able to determine the solution
+ quicker, it also indicates that the Heun Method is more accurate that the
+ Euler Method.
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 4 Question 2 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 4 Question 2 Figure 2.eps
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
