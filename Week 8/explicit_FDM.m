@@ -10,12 +10,12 @@ clear all
 lambda = 3;         
 % Setting up x (iterate for various Nx)
 xmin = 0; xmax = 1;
-Nx = 128;
+Nx = 4;
 dx = (xmax-xmin)/Nx;
 % Setting up t (calculated from stability)
 tmin = 0; tmax = 0.2;
     % From stability dt < 2/lambda^2 and dt < dx^2/2
-dt = min([dx^2/2 2/lambda^2]);
+dt = 0.1; %min([dx^2/2 2/lambda^2]);
 Nt = ceil((tmax - tmin)/dt);    % Minimum integer Nt
 dt = (tmax-tmin)/Nt;            % Update dt
 

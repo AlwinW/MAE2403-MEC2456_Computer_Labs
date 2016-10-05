@@ -4,9 +4,9 @@ clear all; close all; clc; clf;
 
 % x domain
 x_min = 0; x_max = 10;
-dx = 0.1;   % Arbitrarily Chosen
+dx = 2.5;   % Arbitrarily Chosen
 % t domain
-coef = 10;  % Some relationship between dt/dx^2 to vary
+coef = 0.16;  % Some relationship between dt/dx^2 to vary
 delta_t = dx.^2.*coef;
 t_min = 0; t_max = 2;
 Nt = (t_max-t_min)/delta_t;

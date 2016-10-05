@@ -845,7 +845,21 @@ coef
 \end_inset
 
  in the implicit FDM code.
- The results are shown below:
+ The results are shown on the next page.
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Problem
