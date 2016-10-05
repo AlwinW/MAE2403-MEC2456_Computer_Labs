@@ -150,8 +150,7 @@ Diffusion-convection PDE
 \end_layout
 
 \begin_layout Problem
-(d) The MATLAB m-file solution for the PDE for various N is shown below.
- 
+(d) The MATLAB m-file solution for the PDE for a single Nx is shown below.
 \end_layout
 
 \begin_layout Problem
@@ -162,38 +161,27 @@ status open
 
 \begin_layout Plain Layout
 
-function [x, y]=RK4(func, y_init, x_init, x_end, nstep)
+% MATLAB code to compute explicit FDM for:
 \end_layout
 
 \begin_layout Plain Layout
 
-% Matlab Function of the 4th Order Runge-Kutta Method
+% U_t = U_xx - lambda*U_x
 \end_layout
 
 \begin_layout Plain Layout
 
-% func: the ODE to be solved
+% n is the time step
 \end_layout
 
 \begin_layout Plain Layout
 
-% y_init: Initial y value
+% j is the position step
 \end_layout
 
 \begin_layout Plain Layout
 
-% x_init: Inital x value
-\end_layout
-
-\begin_layout Plain Layout
-
-% x_end: Final x value
-\end_layout
-
-\begin_layout Plain Layout
-
-% nstep: No.
- of steps to get from x_init to x_end
+% Matrix is a grid of (x_j, t_n)
 \end_layout
 
 \begin_layout Plain Layout
@@ -202,12 +190,72 @@ function [x, y]=RK4(func, y_init, x_init, x_end, nstep)
 
 \begin_layout Plain Layout
 
-% Finding step size
+% Need to clear the previous u and whatnot values for each run
 \end_layout
 
 \begin_layout Plain Layout
 
-h = (x_end - x_init)/nstep;
+clear all
+\end_layout
+
+\begin_layout Plain Layout
+
+% Defining Lambda 
+\end_layout
+
+\begin_layout Plain Layout
+
+lambda = 3;         
+\end_layout
+
+\begin_layout Plain Layout
+
+% Setting up x (iterate for various Nx)
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin = 0; xmax = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+Nx = 128;
+\end_layout
+
+\begin_layout Plain Layout
+
+dx = (xmax-xmin)/Nx;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Setting up t (calculated from stability)
+\end_layout
+
+\begin_layout Plain Layout
+
+tmin = 0; tmax = 0.2;
+\end_layout
+
+\begin_layout Plain Layout
+
+    % From stability dt < 2/lambda^2 and dt < dx^2/2
+\end_layout
+
+\begin_layout Plain Layout
+
+dt = min([dx^2/2 2/lambda^2]);
+\end_layout
+
+\begin_layout Plain Layout
+
+Nt = ceil((tmax - tmin)/dt);    % Minimum integer Nt
+\end_layout
+
+\begin_layout Plain Layout
+
+dt = (tmax-tmin)/Nt;            % Update dt
 \end_layout
 
 \begin_layout Plain Layout
@@ -216,36 +264,27 @@ h = (x_end - x_init)/nstep;
 
 \begin_layout Plain Layout
 
-% Pre allocating matrix and intitializing algorithim
+% Creating mesh
 \end_layout
 
 \begin_layout Plain Layout
 
-x = 1:nstep;
+xmesh = xmin:dx:xmax;
 \end_layout
 
 \begin_layout Plain Layout
 
-y  = 1:nstep;
+% Initial condition
 \end_layout
 
 \begin_layout Plain Layout
 
+u_init = sin(3*pi*xmesh/2);
 \end_layout
 
 \begin_layout Plain Layout
 
-% Initial values
-\end_layout
-
-\begin_layout Plain Layout
-
-x(1) = x_init;
-\end_layout
-
-\begin_layout Plain Layout
-
-y(1) = y_init;
+u(1,:) = u_init;
 \end_layout
 
 \begin_layout Plain Layout
@@ -254,94 +293,92 @@ y(1) = y_init;
 
 \begin_layout Plain Layout
 
-% For loop used to represent the 4th Order Runge-Kutta Method
+% For each time value
 \end_layout
 
 \begin_layout Plain Layout
 
-for i = 1 : nstep
+for n = 1:Nt
 \end_layout
 
 \begin_layout Plain Layout
 
-    % Next x value 
+    % Go along the x direction from 2 to 2nd last
 \end_layout
 
 \begin_layout Plain Layout
 
-    x(i+1) = x(i) + h;
+    for j = 2:size(u,2)-1
 \end_layout
 
 \begin_layout Plain Layout
 
-    % Computing slope functions
+        u(n+1,j) = u(n,j) +dt*((u(n,j-1)-2*u(n,j)+u(n,j+1))/dx^2 - ...
 \end_layout
 
 \begin_layout Plain Layout
 
-    k1 = func(x(i),y(i));
+            lambda*((u(n,j+1)-u(n,j-1))/(2*dx)));
 \end_layout
 
 \begin_layout Plain Layout
 
-    k2 = func(x(i)+h/2,y(i)+k1*h/2);
+    end
 \end_layout
 
 \begin_layout Plain Layout
 
-    k3 = func(x(i)+h/2,y(i)+k2*h/2);
+    % Set the boundary values for the next time value
 \end_layout
 
 \begin_layout Plain Layout
 
-    k4 = func(x(i)+h,y(i)+h*k3);
+    u(n+1,1) = u(n,1);
 \end_layout
 
 \begin_layout Plain Layout
 
-    
+    u(n+1,end) = u(n,end);
 \end_layout
 
 \begin_layout Plain Layout
 
-    % Compute the next y value
+end
 \end_layout
 
 \begin_layout Plain Layout
 
-    y(i+1) = y(i) + h/6 *(k1+2*k2+2*k3+k4);
 \end_layout
 
 \begin_layout Plain Layout
 
-    
+% Taking the average value of the solution
 \end_layout
 
 \begin_layout Plain Layout
 
-    % fprintf('x = %6.8f, y = %6.8f, k1 = %6.8f, k2 = %6.8f, k3 = %6.8f, k4 =
- %6.8f,
+u_avg = mean(u(Nt,:));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Display the result
+\end_layout
+
+\begin_layout Plain Layout
+
+fprintf('Nx = %4d, Nt = %4d, dx = %6.8f, dt = %6.8f, u_avg = %6.8f
 \backslash
 n', ...
 \end_layout
 
 \begin_layout Plain Layout
 
-    %    x(i+1), y(i+1), k1, k2, k3, k4);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-end
-\end_layout
-
-\begin_layout Plain Layout
-
-end
+        Nx, Nt, dx, dt, u_avg);
 \end_layout
 
 \end_inset
@@ -350,60 +387,8 @@ end
 \end_layout
 
 \begin_layout Problem
-\begin_inset Graphics
-	filename Lab 5 Question 1 Figure 1.eps
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Separator plain
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-Higher Order ODE
-\end_layout
-
-\begin_layout Problem
-(a) Hand Calculation: See Appendix 2
-\end_layout
-
-\begin_layout Problem
-(b) Hand Calculation: See Appendix 2
-\end_layout
-
-\begin_layout Problem
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-\begin_inset space \hfill{}
-\end_inset
-
-(Optional Question for Extra Marks)
-\begin_inset space \hfill{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-(c) The m-code that can solve a higher order ODE is shown below
+This code was then turned into a custom MATLAB function in order to determine
+ the values at various Nx and the required value of Nx for a given precision.
 \end_layout
 
 \begin_layout Problem
@@ -413,196 +398,39 @@ status open
 
 \begin_layout Plain Layout
 
-function [x, v, y]=RK42D(func, y_init, v_init, x_init, x_end, nstep)
+% Determine the various average u values for various Nx
 \end_layout
 
 \begin_layout Plain Layout
 
-% Matlab Function of the 4th Order Runge-Kutta Method in 2D
+for Nx = [8, 16, 32, 64, 128]
 \end_layout
 
 \begin_layout Plain Layout
 
-% func: the ODE to be solved
+    % Calculate the values
 \end_layout
 
 \begin_layout Plain Layout
 
-% y_init: Initial y value
+    [u, Nx, Nt, dx, dt, u_avg] = explicit_FDM_func(Nx);
 \end_layout
 
 \begin_layout Plain Layout
 
-% x_init: Inital x value
+    % Display the result
 \end_layout
 
 \begin_layout Plain Layout
 
-% x_end: Final x value
-\end_layout
-
-\begin_layout Plain Layout
-
-% nstep: No.
- of steps to get from x_init to x_end
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% Finding step size
-\end_layout
-
-\begin_layout Plain Layout
-
-h = (x_end - x_init)/nstep;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% Pre allocating matrix and intitializing algorithim
-\end_layout
-
-\begin_layout Plain Layout
-
-x = 1:nstep;
-\end_layout
-
-\begin_layout Plain Layout
-
-v = 1:nstep;
-\end_layout
-
-\begin_layout Plain Layout
-
-y  = 1:nstep;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% Set the initial values
-\end_layout
-
-\begin_layout Plain Layout
-
-x(1) = x_init;
-\end_layout
-
-\begin_layout Plain Layout
-
-v(1) = v_init;
-\end_layout
-
-\begin_layout Plain Layout
-
-y(1) = y_init;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% For loop used to represent the 4th Order Runge-Kutta Method
-\end_layout
-
-\begin_layout Plain Layout
-
-for i = 1 : nstep
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Next x value 
-\end_layout
-
-\begin_layout Plain Layout
-
-    x(i+1) = x(i) + h;
-\end_layout
-
-\begin_layout Plain Layout
-
-    
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Computing slope functions
-\end_layout
-
-\begin_layout Plain Layout
-
-    k1 = func(x(i),v(i),y(i));
-\end_layout
-
-\begin_layout Plain Layout
-
-    k2 = func(x(i)+h/2,v(i)+k1(1)*h/2,y(i)+k1(2)*h/2);
-\end_layout
-
-\begin_layout Plain Layout
-
-    k3 = func(x(i)+h/2,v(i)+k2(1)*h/2,y(i)+k2(2)*h/2);
-\end_layout
-
-\begin_layout Plain Layout
-
-    k4 = func(x(i)+h,v(i)+k3(1)*h,y(i)+k3(2)*h);
-\end_layout
-
-\begin_layout Plain Layout
-
-    
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Determine the new v and y
-\end_layout
-
-\begin_layout Plain Layout
-
-    v(i+1) = v(i) + h/6 *(k1(1)+2*k2(1)+2*k3(1)+k4(1));
-\end_layout
-
-\begin_layout Plain Layout
-
-    y(i+1) = y(i) + h/6 *(k1(2)+2*k2(2)+2*k3(2)+k4(2));
-\end_layout
-
-\begin_layout Plain Layout
-
-    
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Export the report
-\end_layout
-
-\begin_layout Plain Layout
-
-    fprintf('x = %6.8f, y = %6.8f, v = %6.8f
+    fprintf('Nx = %4d, Nt = %4d, dx = %6.8f, dt = %6.8f, u_avg = %6.8f
 \backslash
 n', ...
 \end_layout
 
 \begin_layout Plain Layout
 
-       x(i+1), y(i+1), v(i+1));
+        Nx, Nt, dx, dt, u_avg);
 \end_layout
 
 \begin_layout Plain Layout
@@ -612,23 +440,77 @@ end
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+% Determine the minimum value of Nx
+\end_layout
+
+\begin_layout Plain Layout
+
+u_avg = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+Nx = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+while abs(u_avg + 0.225) > 0.01
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Increase Nx
+\end_layout
+
+\begin_layout Plain Layout
+
+    Nx = Nx + 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Calculate the values
+\end_layout
+
+\begin_layout Plain Layout
+
+    [u, Nx, Nt, dx, dt, u_avg] = explicit_FDM_func(Nx);
+\end_layout
+
+\begin_layout Plain Layout
+
 end
 \end_layout
 
+\begin_layout Plain Layout
+
+% Display the result
+\end_layout
+
+\begin_layout Plain Layout
+
+fprintf('Nx = %4d, Nt = %4d, dx = %6.8f, dt = %6.8f, u_avg = %6.8f
+\backslash
+n', ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    Nx, Nt, dx, dt, u_avg);
+\end_layout
+
 \end_inset
 
 
 \end_layout
 
 \begin_layout Problem
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-(d) The MATLAB m-file solution to solve the 2nd order ODE is shown below
+The output of this code is shown below:
 \end_layout
 
 \begin_layout Problem
@@ -638,12 +520,32 @@ status open
 
 \begin_layout Plain Layout
 
-% Second order ODE
+>> Week8Lab7Q1
 \end_layout
 
 \begin_layout Plain Layout
 
-d2ydt2 = @(t, v, y) [-2.5 * v - 98.1 * y; v];
+Nx =    8, Nt =   26, dx = 0.12500000, dt = 0.00769231, u_avg = -0.25480487
+\end_layout
+
+\begin_layout Plain Layout
+
+Nx =   16, Nt =  103, dx = 0.06250000, dt = 0.00194175, u_avg = -0.23988590
+\end_layout
+
+\begin_layout Plain Layout
+
+Nx =   32, Nt =  410, dx = 0.03125000, dt = 0.00048780, u_avg = -0.23187570
+\end_layout
+
+\begin_layout Plain Layout
+
+Nx =   64, Nt = 1639, dx = 0.01562500, dt = 0.00012203, u_avg = -0.22771798
+\end_layout
+
+\begin_layout Plain Layout
+
+Nx =  128, Nt = 6554, dx = 0.00781250, dt = 0.00003052, u_avg = -0.22559901
 \end_layout
 
 \begin_layout Plain Layout
@@ -652,51 +554,7 @@ d2ydt2 = @(t, v, y) [-2.5 * v - 98.1 * y; v];
 
 \begin_layout Plain Layout
 
-% Solve using RK4 in 2D
-\end_layout
-
-\begin_layout Plain Layout
-
-[x, v, y]=RK42D(d2ydt2, 0.125, 0, 0, 10, 200);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% Plot the output
-\end_layout
-
-\begin_layout Plain Layout
-
-hold on
-\end_layout
-
-\begin_layout Plain Layout
-
-title('ODE Solution')
-\end_layout
-
-\begin_layout Plain Layout
-
-xlabel('y')
-\end_layout
-
-\begin_layout Plain Layout
-
-ylabel('L')
-\end_layout
-
-\begin_layout Plain Layout
-
-plot(x, y)
-\end_layout
-
-\begin_layout Plain Layout
-
-hold off
+Nx =   24, Nt =  231, dx = 0.04166667, dt = 0.00086580, u_avg = -0.23458989
 \end_layout
 
 \end_inset
@@ -705,16 +563,29 @@ hold off
 \end_layout
 
 \begin_layout Problem
-\begin_inset Graphics
-	filename Lab 5 Question 2 Figure 1.eps
-
+Thus, it can be seen that as Nx increases so does Nt as 
+\begin_inset Formula $\Delta t<\frac{\Delta x^{2}}{2}$
 \end_inset
 
+ from the hand calculation from Appendix 1.
+ It can also be seen that the value for 
+\begin_inset Formula $u_{avg}$
+\end_inset
 
+ steadily approaches the analytical solution of 
+\begin_inset Formula $-0.225$
+\end_inset
+
+ as Nx increases.
+ For a precision of 0.01 the number of points in the 
+\begin_inset Formula $x$
+\end_inset
+
+ domain required was 24.
 \end_layout
 
 \begin_layout Section
-Laboratory 6
+Laboratory 8
 \end_layout
 
 \begin_layout Problem

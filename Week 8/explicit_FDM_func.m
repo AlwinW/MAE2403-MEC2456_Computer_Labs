@@ -1,20 +1,18 @@
+function [u, Nx, Nt, dx, dt, u_avg] = explicit_FDM_func(Nx, quiet)
 % MATLAB code to compute explicit FDM for:
 % U_t = U_xx - lambda*U_x
 % n is the time step
 % j is the position step
 % Matrix is a grid of (x_j, t_n)
 
-% Need to clear the previous u and whatnot values for each run
-clear all
 % Defining Lambda 
 lambda = 3;         
 % Setting up x (iterate for various Nx)
 xmin = 0; xmax = 1;
-Nx = 128;
 dx = (xmax-xmin)/Nx;
 % Setting up t (calculated from stability)
 tmin = 0; tmax = 0.2;
-    % From stability dt < 2/lambda^2 and dt < dx^2/2
+% From stability dt < 2/lambda^2 and dt < dx^2/2
 dt = min([dx^2/2 2/lambda^2]);
 Nt = ceil((tmax - tmin)/dt);    % Minimum integer Nt
 dt = (tmax-tmin)/Nt;            % Update dt
@@ -39,7 +37,6 @@ end
 
 % Taking the average value of the solution
 u_avg = mean(u(Nt,:));
+end
 
-% Display the result
-fprintf('Nx = %4d, Nt = %4d, dx = %6.8f, dt = %6.8f, u_avg = %6.8f\n', ...
-        Nx, Nt, dx, dt, u_avg);
+
