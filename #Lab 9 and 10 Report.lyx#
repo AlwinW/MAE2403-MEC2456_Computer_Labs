@@ -1,0 +1,1355 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\begin_preamble
+\usepackage[framed, numbered]{matlab-prettifier}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language australian
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "palatino" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "style={Matlab-editor}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MAE2403 Lab 9 and 10
+\end_layout
+
+\begin_layout Author
+Alwin Wang
+\begin_inset Newline newline
+\end_inset
+
+2510 2176
+\end_layout
+
+\begin_layout Date
+24th October 2016
+\end_layout
+
+\begin_layout Section
+Laboratory 9
+\end_layout
+
+\begin_layout Problem
+Use the Crank-Nicolson method to solve 
+\begin_inset Formula 
+\[
+\frac{\partial T}{\partial t}=\frac{\partial^{2}T}{\partial x^{2}}+\frac{\partial^{2}T}{\partial\partial y^{2}}+\lambda\frac{\partial T}{\partial x}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\lambda=-3.0$
+\end_inset
+
+ and the solution domain is a square plate 
+\begin_inset Formula $0.0\leq x\leq2.0$
+\end_inset
+
+ and 
+\begin_inset Formula $0.0\leq y\leq2.0$
+\end_inset
+
+.
+ The initial conditions are 
+\begin_inset Formula $T\left(x=0,t=0\right)=6.0$
+\end_inset
+
+, 
+\begin_inset Formula $T\left(x\ne0,t=0\right)=0.0$
+\end_inset
+
+ and the temperature on the four edges is kept constant thereafter.
+ Use 
+\begin_inset Formula $\Delta x=\Delta y=0.5$
+\end_inset
+
+ and 
+\begin_inset Formula $\Delta t=0.1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Problem
+Solution: See Appendix 1.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Use the finite element method to find the steady-state solution for the
+ heat equation 
+\begin_inset Formula 
+\[
+\frac{d^{2}T}{dx^{2}}=-f\left(x\right)
+\]
+
+\end_inset
+
+where the domain is a one-dimensional thin rod of length 10cm with boundary
+ condition 
+\begin_inset Formula $T\left(0\right)=40$
+\end_inset
+
+ and 
+\begin_inset Formula $T\left(10\right)=100$
+\end_inset
+
+ and uniform heat resource of 
+\begin_inset Formula $f\left(x\right)=10$
+\end_inset
+
+.
+ The analytical solution is 
+\begin_inset Formula $T\left(x\right)=-5x^{2}+66x+40$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Problem
+(1) Hand calculation: See Appendix 2
+\end_layout
+
+\begin_layout Problem
+(2) The MATLAB code is not included as it is already available on Moodle.
+\end_layout
+
+\begin_layout Problem
+\begin_inset space \qquad{}
+\end_inset
+
+(a) 4 Element solution
+\end_layout
+
+\begin_layout Problem
+\begin_inset Graphics
+	filename Lab 9 Question 2 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It can be seen that when ns = 4 the Finite Element Method is able to follow
+ the trend of the analytical solution and does not appear to have any propagatio
+n error.
+ In fact, at the 5 nodes, the FEM result appears to be the exact same as
+ the analytical solution.
+ 
+\end_layout
+
+\begin_layout Problem
+However, for each of the 4 elements there is an error 'inside' the element
+ as the FEM result is linear whereas the analytical solution is non-linear.
+ This could be fixed by a non-leaner interpolation (potentially mathematically
+ hard) or an increase the number of nodes (potentially computationally hard).
+\end_layout
+
+\begin_layout Problem
+\begin_inset space \qquad{}
+\end_inset
+
+(b) Varying the number of elements
+\end_layout
+
+\begin_layout Problem
+The line that is changed in MATLAB is shown below and the output for ns
+ = 2, 6, 8 and 10 are shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+lstparams "firstline=13"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ns=4;                % number of elements
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+ns=2
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 9 Question 2 Figure 2.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+ns=6
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 9 Question 2 Figure 3.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+ns=8
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 9 Question 2 Figure 4.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+ns=10
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 9 Question 2 Figure 5.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Laboratory 8
+\end_layout
+
+\begin_layout Problem
+Implicit FDM method to solve the diffusion-convection PDE 
+\begin_inset Formula $\frac{\partial u}{\partial t}=\frac{\partial^{2}u}{\partial x^{2}}$
+\end_inset
+
+ where 
+\begin_inset Formula $0.0\leq x\leq10.0$
+\end_inset
+
+ and 
+\begin_inset Formula $0.0\leq t\leq2.0$
+\end_inset
+
+.
+ The initial condition is 
+\begin_inset Formula $u\left(t=0\right)=\sin\left(x\right)+\sin\left(\frac{x}{2}\right)+\sin\left(\frac{x}{3}\right)+\sin\left(\frac{x}{4}\right)$
+\end_inset
+
+ and the boundary condition is the Dirichlet boundary condition.
+\end_layout
+
+\begin_layout Problem
+(a) Hand Calculation: See Appendix 2
+\end_layout
+
+\begin_layout Problem
+(b) Hand Calculation: See Appendix 2
+\end_layout
+
+\begin_layout Problem
+(c) MATLAB m-code for the implicit method is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% MATLAB code to compute implicit FDM for:
+\end_layout
+
+\begin_layout Plain Layout
+
+% U_t = U_xx
+\end_layout
+
+\begin_layout Plain Layout
+
+clear all;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% x domain
+\end_layout
+
+\begin_layout Plain Layout
+
+x_min = 0; x_max = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+dx = 0.1;   % Arbitrarily Chosen
+\end_layout
+
+\begin_layout Plain Layout
+
+% t domain
+\end_layout
+
+\begin_layout Plain Layout
+
+coef = 0.5;  % Some relationship between dt/dx^2 to vary
+\end_layout
+
+\begin_layout Plain Layout
+
+delta_t = dx.^2.*coef;
+\end_layout
+
+\begin_layout Plain Layout
+
+t_min = 0; t_max = 2;
+\end_layout
+
+\begin_layout Plain Layout
+
+Nt = (t_max-t_min)/delta_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initial Mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+x = x_min:dx:x_max;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initial condition
+\end_layout
+
+\begin_layout Plain Layout
+
+init_field = sin(x) + sin(x/2) + sin(x/3) + sin(x/4);
+\end_layout
+
+\begin_layout Plain Layout
+
+u(:,1) = init_field;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% First loop for time
+\end_layout
+
+\begin_layout Plain Layout
+
+for jj = 1:Nt
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Second loop for x
+\end_layout
+
+\begin_layout Plain Layout
+
+    for ii = 2:size(u,1)-1
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Vectors for tridiagonal matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+        a(ii) = 1+2*coef;   % 1 + 2 * dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+        b(ii) = -coef;      % -dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+        d(ii) = u(ii,jj);   % Solution vector (RHS)
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Boundary Conditions BC + dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+    d(2) = d(2) + coef*u(1,1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    d(size(u,1)-1) = d(size(u,1)-1) + coef*u(size(u,1),1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Constructing tridiagonal matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+    A = diag(a(2:size(u,1)-1),0) + diag(b(2:size(u,1)-2),1) + diag(b(2:size(u,1)
+-2),-1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Solving matrix equation using GaussSeidel code from previous week's
+ work
+\end_layout
+
+\begin_layout Plain Layout
+
+    [u_sol, iter] = GaussSeidel(A,d(2:size(u,1)-1)',10^-6);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Storing result in matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+    u(:,jj+1) = [u(1,1) u_sol' u(size(u,1),1)]';
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Plotting contour of results
+\end_layout
+
+\begin_layout Plain Layout
+
+contourf(u');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The stability can be now tested using the implicit method by varying the
+ value of 
+\begin_inset Quotes eld
+\end_inset
+
+coef
+\begin_inset Quotes erd
+\end_inset
+
+ in the implicit FDM code.
+ The results are shown on the next page.
+\end_layout
+
+\begin_layout Problem
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=0.5
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 1 Figure 1.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=1.0
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 1 Figure 2.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=2.5
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 1 Figure 3.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=10
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 1 Figure 4.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+From the output, it is clear that even for large values of 
+\begin_inset Formula $\frac{\Delta t}{\Delta x^{2}}$
+\end_inset
+
+, the implicit FDM method provides a stable solution as the solution contour
+ does not appear to change.
+ When compared to the unstable solution in the hand calculation shown in
+ Appendix 1 it is clear that the implicit method benefits from unconditional
+ stability.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Crank-Nicolson method to solve the diffusion-convection PDE 
+\begin_inset Formula $\frac{\partial u}{\partial t}=\frac{\partial^{2}u}{\partial x^{2}}$
+\end_inset
+
+ where 
+\begin_inset Formula $0.0\leq x\leq10.0$
+\end_inset
+
+ and 
+\begin_inset Formula $0.0\leq t\leq2.0$
+\end_inset
+
+.
+ The initial condition is 
+\begin_inset Formula $u\left(t=0\right)=\sin\left(x\right)+\sin\left(\frac{x}{2}\right)+\sin\left(\frac{x}{3}\right)+\sin\left(\frac{x}{4}\right)$
+\end_inset
+
+ and the boundary condition is the Dirichlet boundary condition.
+\end_layout
+
+\begin_layout Problem
+(a) Hand Calculation: See Appendix 3
+\end_layout
+
+\begin_layout Problem
+(b) Hand Calculation: See Appendix 3
+\end_layout
+
+\begin_layout Problem
+(c) MATLAB m-code for the implicit method is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% MATLAB code to compute Crank Nicolson for:
+\end_layout
+
+\begin_layout Plain Layout
+
+% U_t = U_xx
+\end_layout
+
+\begin_layout Plain Layout
+
+clear all; clf; close all; clc; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% x domain
+\end_layout
+
+\begin_layout Plain Layout
+
+x_min = 0; x_max = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+dx = 0.1;   % Arbitrarily Chosen
+\end_layout
+
+\begin_layout Plain Layout
+
+% t domain
+\end_layout
+
+\begin_layout Plain Layout
+
+coef = 10;  % Some relationship between dt/dx^2 to vary
+\end_layout
+
+\begin_layout Plain Layout
+
+delta_t = dx.^2.*coef;
+\end_layout
+
+\begin_layout Plain Layout
+
+t_min = 0; t_max = 2;
+\end_layout
+
+\begin_layout Plain Layout
+
+Nt = (t_max-t_min)/delta_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initial Mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+x = x_min:dx:x_max;
+\end_layout
+
+\begin_layout Plain Layout
+
+% Initial condition
+\end_layout
+
+\begin_layout Plain Layout
+
+init_field = sin(x) + sin(x/2) + sin(x/3) + sin(x/4);
+\end_layout
+
+\begin_layout Plain Layout
+
+u(:,1) = init_field;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% First loop for time
+\end_layout
+
+\begin_layout Plain Layout
+
+for jj = 1:Nt
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Second loop for x
+\end_layout
+
+\begin_layout Plain Layout
+
+    for ii = 2:size(u,1)-1
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Vectors for LHS tridiagonal matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+        l_a(ii) = 1+coef;     % 1 + dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+        l_b(ii) = -1/2*coef;  % -1/2 * dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Vectors for RHS tridiagonal matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+        r_a(ii) = 1-coef;     % 1 + dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+        r_b(ii) = 1/2*coef;   % -1/2 * dt/dx^2
+\end_layout
+
+\begin_layout Plain Layout
+
+        % Vector for RHS solution
+\end_layout
+
+\begin_layout Plain Layout
+
+        r_d(ii) = u(ii,jj);   % Solution vector (RHS)
+\end_layout
+
+\begin_layout Plain Layout
+
+    end
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Constructing the LHS tridiagonal matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+    LHS_A = diag(l_a(2:size(u,1)-1),0) + diag(l_b(2:size(u,1)-2),1) + diag(l_b(2
+:size(u,1)-2),-1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Constructing the RHS tridiagonal matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+    RHS_A = diag(r_a(2:size(u,1)-1),0) + diag(r_b(2:size(u,1)-2),1) + diag(r_b(2
+:size(u,1)-2),-1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Construct the RHS solution: A * d + [vec] - [vec]
+\end_layout
+
+\begin_layout Plain Layout
+
+    rhs = RHS_A * r_d(2:end)';
+\end_layout
+
+\begin_layout Plain Layout
+
+    rhs(1) = rhs(1) + coef*u(1,1);  % + coef/2*u(1,1) + coef/2*u(1,1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    rhs(end) = rhs(end) + coef*u(end,1);    % + coef/2*u(N,1) + coef/2*u(N,1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Solving matrix equation using GaussSeidel code from previous weeks
+\end_layout
+
+\begin_layout Plain Layout
+
+    [u_sol, iter] = GaussSeidel(LHS_A,rhs,10^-6);
+\end_layout
+
+\begin_layout Plain Layout
+
+    % Storing result in matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+    u(:,jj+1) = [u(1,1) u_sol' u(size(u,1),1)]';
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Plotting contour of results
+\end_layout
+
+\begin_layout Plain Layout
+
+contourf(u');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+It was seen that the Crank-Nicolson method was unconditionally stable in
+ Appendix 3.
+ This is shown below.
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=0.5
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 2 Figure 1.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=1.0
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 2 Figure 2.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=2.5
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 2 Figure 3.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Formula 
+\[
+\frac{\Delta t}{\Delta x^{2}}=10
+\]
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab 8 Question 2 Figure 4.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+Again, it can been seen that for large and small 
+\begin_inset Formula $\frac{\Delta t}{\Delta x^{2}}$
+\end_inset
+
+ the solution is stable unlike the explicit FDM method used on Lab 7.
+ This can be beneficial in terms of using a larger 
+\begin_inset Formula $\Delta t$
+\end_inset
+
+ meaning fewer time steps required to solve a solution.
+\end_layout
+
+\end_body
+\end_document
