@@ -460,44 +460,412 @@ However, inside the element itself the smaller the number of elements the
 \end_inset
 
 (a) The MATLAB modification required is shown below.
- 
-\end_layout
-
-\begin_layout Section
-Laboratory 8
 \end_layout
 
 \begin_layout Problem
-Implicit FDM method to solve the diffusion-convection PDE 
-\begin_inset Formula $\frac{\partial u}{\partial t}=\frac{\partial^{2}u}{\partial x^{2}}$
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+Old
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "firstnumber=11"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% defining the element mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0.; xmax=10.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+ns=10;
+\end_layout
+
+\begin_layout Plain Layout
+
+dx=(xmax-xmin)/ns;
+\end_layout
+
+\begin_layout Plain Layout
+
+x=[xmin:dx:xmax];
+\end_layout
+
 \end_inset
 
- where 
-\begin_inset Formula $0.0\leq x\leq10.0$
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "firstnumber=33"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for ii=1:ns
+\end_layout
+
+\begin_layout Plain Layout
+
+   c=1/dx;
+\end_layout
+
 \end_inset
 
- and 
-\begin_inset Formula $0.0\leq t\leq2.0$
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "firstnumber=43"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+       end
+\end_layout
+
+\begin_layout Plain Layout
+
+       F(k) = F(k) + ff*dx/2;
+\end_layout
+
+\begin_layout Plain Layout
+
+   end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+New
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "firstnumber=11"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% defining the element mesh
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0.; xmax=10.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+x=[xmin 2.5 5 6.25 7.5 8.75 xmax];
+\end_layout
+
+\begin_layout Plain Layout
+
+ns=length(x)-1;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "firstnumber=33"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for ii=1:ns
+\end_layout
+
+\begin_layout Plain Layout
+
+   c=1/(x(ii+1)-x(ii));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "firstnumber=43"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+       end
+\end_layout
+
+\begin_layout Plain Layout
+
+       F(k) = F(k) + ff*(x(ii+1)-x(ii))/2
+\end_layout
+
+\begin_layout Plain Layout
+
+   end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+The idea behind this change is that the solution domain, vector 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+x
+\end_layout
+
+\end_inset
+
+, needs to be defined first and then the number of elements, 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+nx
+\end_layout
+
+\end_inset
+
+, determined.
+ The variable 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+dx
+\end_layout
+
+\end_inset
+
+ is no longer needed as the length of each element is no longer constant.
+ Thus, when looping through each element the element length is no longer
+ 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+dx
+\end_layout
+
+\end_inset
+
+, it is the difference between the next node, 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+x(ii+1)
+\end_layout
+
+\end_inset
+
+, and the current node, 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+x(ii)
+\end_layout
+
 \end_inset
 
 .
- The initial condition is 
-\begin_inset Formula $u\left(t=0\right)=\sin\left(x\right)+\sin\left(\frac{x}{2}\right)+\sin\left(\frac{x}{3}\right)+\sin\left(\frac{x}{4}\right)$
+ Thus, 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+dx
+\end_layout
+
 \end_inset
 
- and the boundary condition is the Dirichlet boundary condition.
+ is replaced with 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+x(ii + 1) - x(ii)
+\end_layout
+
+\end_inset
+
+ everywhere in the code.
 \end_layout
 
 \begin_layout Problem
-(a) Hand Calculation: See Appendix 2
+\begin_inset space \qquad{}
+\end_inset
+
+(b) The solution of the unequal spacing mesh is shown below.
 \end_layout
 
 \begin_layout Problem
-(b) Hand Calculation: See Appendix 2
+It can be seen that even with unequal spacing, the solution at each of the
+ nodes is still exact (i.e.
+ the same as the analytical solution).
+ The general shape of the trend is still captured and there is still some
+ interpolation error inside the element but it is believed that if the spacing
+ was adjusted to match the variation then the solution would be very accurate.
 \end_layout
 
 \begin_layout Problem
-(c) MATLAB m-code for the implicit method is shown below.
+\begin_inset Graphics
+	filename Lab 9 Question 3 Figure 1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Problem
+\begin_inset space \qquad{}
+\end_inset
+
+(c) Comparison of meshes
+\end_layout
+
+\begin_layout Problem
+The unequal mesh contained 6 elements and this solution can be compared
+ to the 4, 6 and 8 element results from 2(b).
+ It is clear that the addition of the nodes at 6.25 and 8.75 increases the
+ accuracy of the solution in the domain 
+\begin_inset Formula $5\leq x\leq10$
+\end_inset
+
+ compared to the 4 element solution.
+ However, it is also seen that the addition of these does not increase the
+ accuracy of the solution in the domain 
+\begin_inset Formula $0\leq x\leq5$
+\end_inset
+
+ as it appears the exact same as the 4 element solution in this region.
+ It can also be seen that the unequal mesh is more accurate that the 6 element
+ solution in the 
+\begin_inset Formula $5\leq x\leq10$
+\end_inset
+
+ region and less accurate in the 
+\begin_inset Formula $0\leq x\leq5$
+\end_inset
+
+ region.
+\end_layout
+
+\begin_layout Problem
+Thus, the accuracy of the unequal mesh is seen to be better at higher density
+ areas and lower at lower density areas.
+ This is in contrast to increasing the value of ns which simply increases
+ the overall accuracy of the solution over the whole solution domain.
+\end_layout
+
+\begin_layout Section
+Laboratory 10
+\end_layout
+
+\begin_layout Problem
+Digital Audio Signal Filtering
+\end_layout
+
+\begin_layout Problem
+(a) See MATLAB code below.
+\end_layout
+
+\begin_layout Problem
+(b) See MATLAB code below.
 \end_layout
 
 \begin_layout Problem
@@ -507,12 +875,52 @@ status open
 
 \begin_layout Plain Layout
 
-% MATLAB code to compute implicit FDM for:
+% MATLAB can use inbuilt function wavread(...) to read in audio wav file.
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
-% U_t = U_xx
+% MATLAB can output digital signal to a wav file by using wavwrite(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\end_layout
+
+\begin_layout Plain Layout
+
+% y:        the read-in digital signal
+\end_layout
+
+\begin_layout Plain Layout
+
+% fs:       sample rate in Hertz, i.e., dt=1/fs.
+\end_layout
+
+\begin_layout Plain Layout
+
+% nbits:    number of bit per sample used to encord the data in file.
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\end_layout
+
+\begin_layout Plain Layout
+
+%%%
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+clc; 
 \end_layout
 
 \begin_layout Plain Layout
@@ -522,176 +930,119 @@ clear all;
 
 \begin_layout Plain Layout
 
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
-% x domain
+% Using wavread to read digital audio file 'triangle.wav'.
+ This file should
 \end_layout
 
 \begin_layout Plain Layout
 
-x_min = 0; x_max = 10;
+% be put in the same directory of this m-file.
 \end_layout
 
 \begin_layout Plain Layout
 
-dx = 0.1;   % Arbitrarily Chosen
+[y, fs] = audioread('triangle.wav');
 \end_layout
 
 \begin_layout Plain Layout
 
-% t domain
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
-coef = 0.5;  % Some relationship between dt/dx^2 to vary
+% Use the inbuilt MATLAB sound function to play the audio at the original
+ sample
 \end_layout
 
 \begin_layout Plain Layout
 
-delta_t = dx.^2.*coef;
+% rate.
 \end_layout
 
 \begin_layout Plain Layout
 
-t_min = 0; t_max = 2;
+disp('Playing at the original sample rate.');
 \end_layout
 
 \begin_layout Plain Layout
 
-Nt = (t_max-t_min)/delta_t;
+sound(y, fs);
 \end_layout
 
 \begin_layout Plain Layout
 
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
-% Initial Mesh
+% The FFT of the digital signal.
 \end_layout
 
 \begin_layout Plain Layout
 
-x = x_min:dx:x_max;
+Y = fft(y);
 \end_layout
 
 \begin_layout Plain Layout
 
-% Initial condition
+%Own notes:
 \end_layout
 
 \begin_layout Plain Layout
 
-init_field = sin(x) + sin(x/2) + sin(x/3) + sin(x/4);
+% MATLAB stores this as the positive then negative values,
 \end_layout
 
 \begin_layout Plain Layout
 
-u(:,1) = init_field;
+% so we need to generate a frequency vector that is positive
 \end_layout
 
 \begin_layout Plain Layout
 
+% then negative!!
 \end_layout
 
 \begin_layout Plain Layout
 
-% First loop for time
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
-for jj = 1:Nt
+%% Generate the frequncy.
 \end_layout
 
 \begin_layout Plain Layout
 
-    % Second loop for x
+Fc = fs/2;
 \end_layout
 
 \begin_layout Plain Layout
 
-    for ii = 2:size(u,1)-1
+N=length(y);
 \end_layout
 
 \begin_layout Plain Layout
 
-        % Vectors for tridiagonal matrix
+freq = Fc*linspace(0,1,N/2);
 \end_layout
 
 \begin_layout Plain Layout
 
-        a(ii) = 1+2*coef;   % 1 + 2 * dt/dx^2
+freq2 = cat(2,freq,freq(1:N/2)-Fc);
 \end_layout
 
 \begin_layout Plain Layout
 
-        b(ii) = -coef;      % -dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        d(ii) = u(ii,jj);   % Solution vector (RHS)
-\end_layout
-
-\begin_layout Plain Layout
-
-    end
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Boundary Conditions BC + dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-    d(2) = d(2) + coef*u(1,1);
-\end_layout
-
-\begin_layout Plain Layout
-
-    d(size(u,1)-1) = d(size(u,1)-1) + coef*u(size(u,1),1);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Constructing tridiagonal matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-    A = diag(a(2:size(u,1)-1),0) + diag(b(2:size(u,1)-2),1) + diag(b(2:size(u,1)
--2),-1);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Solving matrix equation using GaussSeidel code from previous week's
- work
-\end_layout
-
-\begin_layout Plain Layout
-
-    [u_sol, iter] = GaussSeidel(A,d(2:size(u,1)-1)',10^-6);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Storing result in matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-    u(:,jj+1) = [u(1,1) u_sol' u(size(u,1),1)]';
-\end_layout
-
-\begin_layout Plain Layout
-
-end
+% put your code here
 \end_layout
 
 \begin_layout Plain Layout
@@ -700,123 +1051,134 @@ end
 
 \begin_layout Plain Layout
 
-% Plotting contour of results
+% Plot of power spectrum
 \end_layout
 
 \begin_layout Plain Layout
 
-contourf(u');
+figure
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-The stability can be now tested using the implicit method by varying the
- value of 
-\begin_inset Quotes eld
-\end_inset
-
-coef
-\begin_inset Quotes erd
-\end_inset
-
- in the implicit FDM code.
- The results are shown on the next page.
-\end_layout
-
-\begin_layout Problem
-\begin_inset VSpace vfill
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "48col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=0.5
-\]
 
-\end_inset
+plot(freq2,abs(Y)/N);
+\end_layout
 
+\begin_layout Plain Layout
 
-\begin_inset Graphics
-	filename Lab 8 Question 1 Figure 1.eps
-	width 80text%
+title('Amplitude Spectrum of y(t)')
+\end_layout
 
-\end_inset
+\begin_layout Plain Layout
 
+xlabel('Frequency (Hz)')
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel('|Y(f)|')
+\end_layout
+
+\begin_layout Plain Layout
 
 \end_layout
 
-\end_inset
+\begin_layout Plain Layout
 
-
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "48col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
+% applying low pass filter
+\end_layout
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=1.0
-\]
 
-\end_inset
+f_cutoff = 0.45*10^4; % given in question
+\end_layout
 
+\begin_layout Plain Layout
 
-\begin_inset Graphics
-	filename Lab 8 Question 1 Figure 2.eps
-	width 80text%
+filt = exp(-(freq2/f_cutoff).^20);
+\end_layout
 
-\end_inset
+\begin_layout Plain Layout
 
+Filt_Y = Y.*filt';
+\end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% plotting out the normalised power spectrum
+\end_layout
+
+\begin_layout Plain Layout
+
+figure
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(freq2,abs(Filt_Y)/N);
+\end_layout
+
+\begin_layout Plain Layout
+
+title('Low Pass of Y(t)')
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel('Frequency (Hz)')
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel('|Y(f)|')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%% inverse FFT
+\end_layout
+
+\begin_layout Plain Layout
+
+filt_y = ifft(Filt_Y);
+\end_layout
+
+\begin_layout Plain Layout
+
+% save the wav file and reply.
+\end_layout
+
+\begin_layout Plain Layout
+
+audiowrite('trianglelowpass.wav', filt_y, fs);
+\end_layout
+
+\begin_layout Plain Layout
+
+[filt_y, fs]=audioread('trianglelowpass.wav');
+\end_layout
+
+\begin_layout Plain Layout
+
+pause(5);
+\end_layout
+
+\begin_layout Plain Layout
+
+disp('Playing at the low-pass sample.');
+\end_layout
+
+\begin_layout Plain Layout
+
+sound(filt_y, fs);
 \end_layout
 
 \end_inset
@@ -845,17 +1207,9 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=2.5
-\]
-
-\end_inset
-
-
 \begin_inset Graphics
-	filename Lab 8 Question 1 Figure 3.eps
-	width 80text%
+	filename Lab 10 Question 1 Figure 1.eps
+	width 90text%
 
 \end_inset
 
@@ -885,17 +1239,9 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=10
-\]
-
-\end_inset
-
-
 \begin_inset Graphics
-	filename Lab 8 Question 1 Figure 4.eps
-	width 80text%
+	filename Lab 10 Question 1 Figure 2.eps
+	width 90text%
 
 \end_inset
 
@@ -908,488 +1254,27 @@ status open
 \end_layout
 
 \begin_layout Problem
-From the output, it is clear that even for large values of 
-\begin_inset Formula $\frac{\Delta t}{\Delta x^{2}}$
-\end_inset
-
-, the implicit FDM method provides a stable solution as the solution contour
- does not appear to change.
- When compared to the unstable solution in the hand calculation shown in
- Appendix 1 it is clear that the implicit method benefits from unconditional
- stability.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Separator plain
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-Crank-Nicolson method to solve the diffusion-convection PDE 
-\begin_inset Formula $\frac{\partial u}{\partial t}=\frac{\partial^{2}u}{\partial x^{2}}$
-\end_inset
-
- where 
-\begin_inset Formula $0.0\leq x\leq10.0$
-\end_inset
-
- and 
-\begin_inset Formula $0.0\leq t\leq2.0$
-\end_inset
-
-.
- The initial condition is 
-\begin_inset Formula $u\left(t=0\right)=\sin\left(x\right)+\sin\left(\frac{x}{2}\right)+\sin\left(\frac{x}{3}\right)+\sin\left(\frac{x}{4}\right)$
-\end_inset
-
- and the boundary condition is the Dirichlet boundary condition.
-\end_layout
-
-\begin_layout Problem
-(a) Hand Calculation: See Appendix 3
-\end_layout
-
-\begin_layout Problem
-(b) Hand Calculation: See Appendix 3
-\end_layout
-
-\begin_layout Problem
-(c) MATLAB m-code for the implicit method is shown below.
-\end_layout
-
-\begin_layout Problem
+It can be seen that in the low pass of 
 \begin_inset listings
-inline false
+inline true
 status open
 
 \begin_layout Plain Layout
 
-% MATLAB code to compute Crank Nicolson for:
-\end_layout
-
-\begin_layout Plain Layout
-
-% U_t = U_xx
-\end_layout
-
-\begin_layout Plain Layout
-
-clear all; clf; close all; clc; 
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% x domain
-\end_layout
-
-\begin_layout Plain Layout
-
-x_min = 0; x_max = 10;
-\end_layout
-
-\begin_layout Plain Layout
-
-dx = 0.1;   % Arbitrarily Chosen
-\end_layout
-
-\begin_layout Plain Layout
-
-% t domain
-\end_layout
-
-\begin_layout Plain Layout
-
-coef = 10;  % Some relationship between dt/dx^2 to vary
-\end_layout
-
-\begin_layout Plain Layout
-
-delta_t = dx.^2.*coef;
-\end_layout
-
-\begin_layout Plain Layout
-
-t_min = 0; t_max = 2;
-\end_layout
-
-\begin_layout Plain Layout
-
-Nt = (t_max-t_min)/delta_t;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% Initial Mesh
-\end_layout
-
-\begin_layout Plain Layout
-
-x = x_min:dx:x_max;
-\end_layout
-
-\begin_layout Plain Layout
-
-% Initial condition
-\end_layout
-
-\begin_layout Plain Layout
-
-init_field = sin(x) + sin(x/2) + sin(x/3) + sin(x/4);
-\end_layout
-
-\begin_layout Plain Layout
-
-u(:,1) = init_field;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% First loop for time
-\end_layout
-
-\begin_layout Plain Layout
-
-for jj = 1:Nt
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Second loop for x
-\end_layout
-
-\begin_layout Plain Layout
-
-    for ii = 2:size(u,1)-1
-\end_layout
-
-\begin_layout Plain Layout
-
-        % Vectors for LHS tridiagonal matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-        l_a(ii) = 1+coef;     % 1 + dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        l_b(ii) = -1/2*coef;  % -1/2 * dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        % Vectors for RHS tridiagonal matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-        r_a(ii) = 1-coef;     % 1 + dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        r_b(ii) = 1/2*coef;   % -1/2 * dt/dx^2
-\end_layout
-
-\begin_layout Plain Layout
-
-        % Vector for RHS solution
-\end_layout
-
-\begin_layout Plain Layout
-
-        r_d(ii) = u(ii,jj);   % Solution vector (RHS)
-\end_layout
-
-\begin_layout Plain Layout
-
-    end
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Constructing the LHS tridiagonal matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-    LHS_A = diag(l_a(2:size(u,1)-1),0) + diag(l_b(2:size(u,1)-2),1) + diag(l_b(2
-:size(u,1)-2),-1);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Constructing the RHS tridiagonal matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-    RHS_A = diag(r_a(2:size(u,1)-1),0) + diag(r_b(2:size(u,1)-2),1) + diag(r_b(2
-:size(u,1)-2),-1);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Construct the RHS solution: A * d + [vec] - [vec]
-\end_layout
-
-\begin_layout Plain Layout
-
-    rhs = RHS_A * r_d(2:end)';
-\end_layout
-
-\begin_layout Plain Layout
-
-    rhs(1) = rhs(1) + coef*u(1,1);  % + coef/2*u(1,1) + coef/2*u(1,1)
-\end_layout
-
-\begin_layout Plain Layout
-
-    rhs(end) = rhs(end) + coef*u(end,1);    % + coef/2*u(N,1) + coef/2*u(N,1)
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Solving matrix equation using GaussSeidel code from previous weeks
-\end_layout
-
-\begin_layout Plain Layout
-
-    [u_sol, iter] = GaussSeidel(LHS_A,rhs,10^-6);
-\end_layout
-
-\begin_layout Plain Layout
-
-    % Storing result in matrix
-\end_layout
-
-\begin_layout Plain Layout
-
-    u(:,jj+1) = [u(1,1) u_sol' u(size(u,1),1)]';
-\end_layout
-
-\begin_layout Plain Layout
-
-end
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-% Plotting contour of results
-\end_layout
-
-\begin_layout Plain Layout
-
-contourf(u');
+Y(t)
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Problem
-It was seen that the Crank-Nicolson method was unconditionally stable in
- Appendix 3.
- This is shown below.
-\end_layout
-
-\begin_layout Problem
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "48col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=0.5
-\]
-
+ there are no peaks for frequencies with a magnitude greater than 0.5, indicating
+ that these frequencies have been cut off, which is expected as the cut
+ off frequency was set at 
+\begin_inset Formula $0.45\times10^{4}$
 \end_inset
 
-
-\begin_inset Graphics
-	filename Lab 8 Question 2 Figure 1.eps
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "48col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=1.0
-\]
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename Lab 8 Question 2 Figure 2.eps
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "48col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=2.5
-\]
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename Lab 8 Question 2 Figure 3.eps
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "48col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Formula 
-\[
-\frac{\Delta t}{\Delta x^{2}}=10
-\]
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename Lab 8 Question 2 Figure 4.eps
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Problem
-Again, it can been seen that for large and small 
-\begin_inset Formula $\frac{\Delta t}{\Delta x^{2}}$
-\end_inset
-
- the solution is stable unlike the explicit FDM method used on Lab 7.
- This can be beneficial in terms of using a larger 
-\begin_inset Formula $\Delta t$
-\end_inset
-
- meaning fewer time steps required to solve a solution.
+ Hz.
+ The sound for the low pass is also lower in tone which is expected as the
+ higher frequencies have been removed.
 \end_layout
 
 \end_body

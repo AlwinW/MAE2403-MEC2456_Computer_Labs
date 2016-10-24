@@ -75,5 +75,5 @@ analysolution=polyval(polysolution,xx);
 plot(x, T,'-ro', xx, analysolution, 'LineWidth', 2)
 xlabel ('x coordinate', 'FontSize', 16)
 ylabel ('Temperature', 'FontSize', 16)
-h = legend('FEM results','analytical solution',2);
+h = legend('FEM results','analytical solution',2,'Location','SouthEast');
 set(h,'Interpreter','none')
